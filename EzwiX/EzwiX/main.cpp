@@ -24,6 +24,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	RegisterClassEx(&wc);
 
+	RECT wr = { 0, 0, 500, 400 };
+	AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);
+
 	hWnd = CreateWindowEx(
 		NULL,
 		"WindowClass1", //name of the window class
@@ -31,8 +34,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		WS_OVERLAPPEDWINDOW, //style of the window
 		300, //x-position
 		300, //y-position
-		500, //width
-		400, //height
+		wr.right - wr.left, //width
+		wr.bottom - wr.top, //height
 		NULL, //parent window
 		NULL, //for menus
 		hInstance, //application handle
