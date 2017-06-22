@@ -1,73 +1,76 @@
 #include <windows.h>
 #include <windowsx.h>
 
-LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+#include "Application.h"
+#include "log.h"
+
+/*#include <d3d11.h>
+#include <d3dx11.h>
+#include <d3dx10.h>
+
+#pragma comment (lib, "d3d11.lib")
+#pragma comment (lib, "d3dx11.lib")
+#pragma comment (lib, "d3dx10.lib")*/
+
+enum main_state
+{
+	MAIN_INIT,
+	MAIN_UPDATE,
+	MAIN_FINISH,
+	MAIN_EXIT
+};
+
+Application* App;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	//Handle for the window
-	HWND hWnd;
-	
-	//Information for the window class
-	WNDCLASSEX wc;
+	LOG("Starting EzwiX");
 
-	//Clear out the window
-	ZeroMemory(&wc, sizeof(WNDCLASSEX));
+	main_state state = MAIN_INIT;
+	App = new Application();
 
-	wc.cbSize = sizeof(WNDCLASSEX);
-	wc.style = CS_HREDRAW | CS_VREDRAW;
-	wc.lpfnWndProc = WindowProc;
-	wc.hInstance = hInstance;
-	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
-	wc.lpszClassName = "WindowClass1";
-
-	RegisterClassEx(&wc);
-
-	RECT wr = { 0, 0, 500, 400 };
-	AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);
-
-	hWnd = CreateWindowEx(
-		NULL,
-		"WindowClass1", //name of the window class
-		"EzwiX Window", //title of the window
-		WS_OVERLAPPEDWINDOW, //style of the window
-		300, //x-position
-		300, //y-position
-		wr.right - wr.left, //width
-		wr.bottom - wr.top, //height
-		NULL, //parent window
-		NULL, //for menus
-		hInstance, //application handle
-		NULL //for multiple windows
-	);
-
-	ShowWindow(hWnd, nCmdShow);
-
-	//Handles Windows event messages
-	MSG msg;
-
-	while (GetMessage(&msg, NULL, 0, 0))
+	while (state != MAIN_EXIT)
 	{
-		TranslateMessage(&msg);
-		//send the mesage to the WindowProc function
-		DispatchMessage(&msg);
-	}
-
-	return msg.wParam;
-}
-
-LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	switch (message)
-	{
-		case WM_DESTROY:
+		switch (state)
 		{
-			PostQuitMessage(0);
-			return 0;
+			case MAIN_INIT:
+				if (App->Init() == false)
+				{
+					LOG("Application Init exits with Error");
+					state = MAIN_EXIT;
+				}
+				else
+				{
+					state = MAIN_UPDATE;
+					LOG("-------------- Application Update -------------------");
+				}
+				break;
+			case MAIN_UPDATE:
+				{	int update_ret = App->Update();
+				if (update_ret == UPDATE_ERROR)
+				{
+					LOG("Application Update exits with Error");
+					state = MAIN_EXIT;
+				}
+
+				if (update_ret == UPDATE_STOP)
+					state = MAIN_FINISH;
+				break;
+				}
+			case MAIN_FINISH:
+				LOG("------------------ Application CleanUp ----------------------");
+				if (App->CleanUp() == false)
+				{
+					LOG("Application CleanUp exits with Error");
+				}
+				
+				state = MAIN_EXIT;
+
+				break;
 		}
-		break;
 	}
 
-	return DefWindowProc(hWnd, message, wParam, lParam);
+	delete App;
+
+	return 0;
 }
