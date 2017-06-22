@@ -3,7 +3,7 @@ skip_tags: true
 configuration: Release
 platform: x86
 build:
-  project: EzwiX.sln
+  project: EzWix/EzwiX.sln
   parallel: true
   verbosity: normal
 deploy:
