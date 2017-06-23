@@ -7,6 +7,7 @@
 class Module;
 class ModuleWindow;
 class ModuleInput;
+class ModuleGraphics;
 
 using namespace std;
 
@@ -43,13 +44,12 @@ public:
 	//Modules
 	ModuleWindow* window = nullptr;
 	ModuleInput* input = nullptr;
+	ModuleGraphics* graphics = nullptr;
 
 private:
 	MSG msg;
 
 	vector<Module*> list_modules;
-
-
 };
 
 extern Application* App;

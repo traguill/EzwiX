@@ -3,8 +3,6 @@
 
 #include "Module.h"
 
-#define FULL_SCREEN false
-
 class ModuleWindow : public Module
 {
 public:
@@ -14,10 +12,20 @@ public:
 	bool Init();
 	bool CleanUp();
 
+	int GetScreenWidth()const;
+	int GetScreenHeight()const;
+
+	bool IsVsyncEnabled()const;
+	bool IsFullScreen()const;
+
 private:
 
 	int screen_width = 0;
 	int screen_height = 0;
+
+	//TODO: Save this variables in a configuration file
+	bool full_screen = false;
+	bool vsync_enabled = true;
 
 };
 

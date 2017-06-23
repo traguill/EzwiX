@@ -19,6 +19,9 @@
     <Filter Include="Source Files\Modules">
       <UniqueIdentifier>{ae82019e-5686-45d4-bf5e-db3207309815}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Modules\Graphics">
+      <UniqueIdentifier>{535c2123-cd7a-4680-8568-ac718870f333}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -36,6 +39,12 @@
     <ClCompile Include="ModuleInput.cpp">
       <Filter>Source Files\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleGraphics.cpp">
+      <Filter>Source Files\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DModule.cpp">
+      <Filter>Source Files\Modules\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -52,6 +61,12 @@
     </ClInclude>
     <ClInclude Include="ModuleInput.h">
       <Filter>Source Files\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleGraphics.h">
+      <Filter>Source Files\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DModule.h">
+      <Filter>Source Files\Modules\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

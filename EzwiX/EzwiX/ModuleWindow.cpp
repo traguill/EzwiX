@@ -43,7 +43,7 @@ bool ModuleWindow::Init()
 	screen_width = GetSystemMetrics(SM_CXSCREEN);
 	screen_height = GetSystemMetrics(SM_CYSCREEN);
 
-	if (FULL_SCREEN)
+	if (full_screen)
 	{
 		memset(&dm_screen_settings, 0, sizeof(dm_screen_settings));
 		dm_screen_settings.dmSize = sizeof(dm_screen_settings);
@@ -91,7 +91,7 @@ bool ModuleWindow::CleanUp()
 
 	ShowCursor(true); //In case we hide it before
 
-	if (FULL_SCREEN)
+	if (full_screen)
 	{
 		ChangeDisplaySettings(NULL, 0);
 	}
@@ -103,6 +103,26 @@ bool ModuleWindow::CleanUp()
 	App->hInstance = NULL;
 
 	return true;
+}
+
+int ModuleWindow::GetScreenWidth() const
+{
+	return screen_width;
+}
+
+int ModuleWindow::GetScreenHeight() const
+{
+	return screen_height;
+}
+
+bool ModuleWindow::IsVsyncEnabled() const
+{
+	return vsync_enabled;
+}
+
+bool ModuleWindow::IsFullScreen() const
+{
+	return full_screen;
 }
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam)

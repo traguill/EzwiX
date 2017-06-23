@@ -118,15 +118,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="D3DModule.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ModuleGraphics.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="D3DModule.h" />
     <ClInclude Include="log.h" />
     <ClInclude Include="Module.h" />
+    <ClInclude Include="ModuleGraphics.h" />
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="ModuleWindow.h" />
   </ItemGroup>

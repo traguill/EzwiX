@@ -4,14 +4,17 @@
 #include "Module.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
+#include "ModuleGraphics.h"
 
 Application::Application()
 {
 	window = new ModuleWindow("window");
 	input = new ModuleInput("input");
+	graphics = new ModuleGraphics("graphics");
 
 	list_modules.push_back(window);
 	list_modules.push_back(input);
+	list_modules.push_back(graphics);
 }
 
 Application::~Application()
@@ -70,9 +73,20 @@ update_status Application::UpdateFrame()
 	{
 		return update_status::UPDATE_STOP;
 	}
-	//Update graphics frame
+	
+	update_status ret = update_status::UPDATE_CONTINUE;
 
-	return update_status::UPDATE_CONTINUE;
+	vector<Module*>::iterator module = list_modules.begin();
+
+	//TODO: Do the same for preupdate and postupdate
+	for (module; module != list_modules.end(); ++module)
+	{
+		ret = (*module)->Update();
+		if (ret != update_status::UPDATE_CONTINUE)
+			return ret;
+	}
+
+	return ret;
 }
 
 bool Application::CleanUp()
