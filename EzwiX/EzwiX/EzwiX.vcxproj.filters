@@ -22,6 +22,12 @@
     <Filter Include="Source Files\Modules\Graphics">
       <UniqueIdentifier>{535c2123-cd7a-4680-8568-ac718870f333}</UniqueIdentifier>
     </Filter>
+    <Filter Include="3rdParty">
+      <UniqueIdentifier>{06899488-21bf-4132-95aa-08aee94b0060}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdParty\Imgui">
+      <UniqueIdentifier>{9eec4e55-18f6-41b0-993e-cec3b4868d23}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -45,6 +51,18 @@
     <ClCompile Include="D3DModule.cpp">
       <Filter>Source Files\Modules\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="ImGui\imgui_impl_dx11.cpp">
+      <Filter>3rdParty\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui.cpp">
+      <Filter>3rdParty\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_demo.cpp">
+      <Filter>3rdParty\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_draw.cpp">
+      <Filter>3rdParty\Imgui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -67,6 +85,27 @@
     </ClInclude>
     <ClInclude Include="D3DModule.h">
       <Filter>Source Files\Modules\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_impl_dx11.h">
+      <Filter>3rdParty\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_internal.h">
+      <Filter>3rdParty\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\stb_rect_pack.h">
+      <Filter>3rdParty\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\stb_textedit.h">
+      <Filter>3rdParty\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\stb_truetype.h">
+      <Filter>3rdParty\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imconfig.h">
+      <Filter>3rdParty\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui.h">
+      <Filter>3rdParty\Imgui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

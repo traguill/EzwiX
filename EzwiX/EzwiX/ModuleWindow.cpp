@@ -3,6 +3,9 @@
 #include "Application.h"
 #include "log.h"
 
+#include "ImGui\imgui.h"
+#include "ImGui\imgui_impl_dx11.h"
+
 ModuleWindow::ModuleWindow(const char * name, bool start_enabled) : Module(name, start_enabled)
 {
 }
@@ -127,6 +130,10 @@ bool ModuleWindow::IsFullScreen() const
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam)
 {
+
+	if (ImGui_ImplDX11_WndProcHandler(hwnd, umessage, wparam, lparam))
+		return true;
+
 	switch (umessage)
 	{
 	case WM_DESTROY:
