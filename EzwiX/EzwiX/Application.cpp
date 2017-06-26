@@ -6,8 +6,12 @@
 #include "ModuleInput.h"
 #include "ModuleGraphics.h"
 
+#include "Random.h"
+
 Application::Application()
 {
+	rnd = new Random();
+
 	window = new ModuleWindow("window");
 	input = new ModuleInput("input");
 	graphics = new ModuleGraphics("graphics");
@@ -23,6 +27,8 @@ Application::~Application()
 
 	for (i; i != list_modules.rend(); ++i)
 		delete (*i);
+
+	delete rnd;
 }
 
 bool Application::Init()

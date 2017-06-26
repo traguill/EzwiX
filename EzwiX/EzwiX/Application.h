@@ -9,6 +9,8 @@ class ModuleWindow;
 class ModuleInput;
 class ModuleGraphics;
 
+class Random;
+
 using namespace std;
 
 #define WIN32_LEAN_AND_MEAN
@@ -45,6 +47,9 @@ public:
 	ModuleWindow* window = nullptr;
 	ModuleInput* input = nullptr;
 	ModuleGraphics* graphics = nullptr;
+
+	//Other
+	Random* rnd = nullptr;
 
 private:
 	MSG msg;
