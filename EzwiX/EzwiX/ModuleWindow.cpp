@@ -131,8 +131,7 @@ bool ModuleWindow::IsFullScreen() const
 LRESULT CALLBACK WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam)
 {
 
-	if (ImGui_ImplDX11_WndProcHandler(hwnd, umessage, wparam, lparam))
-		return true;
+	ImGui_ImplDX11_WndProcHandler(hwnd, umessage, wparam, lparam);
 
 	switch (umessage)
 	{
