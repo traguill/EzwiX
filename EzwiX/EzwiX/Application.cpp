@@ -6,6 +6,7 @@
 #include "ModuleInput.h"
 #include "ModuleGraphics.h"
 #include "ModuleCamera.h"
+#include "ModuleEditor.h"
 
 #include "Random.h"
 
@@ -16,12 +17,14 @@ Application::Application()
 	window = new ModuleWindow("window");
 	input = new ModuleInput("input");
 	camera = new ModuleCamera("camera");
+	editor = new ModuleEditor("editor");
 	graphics = new ModuleGraphics("graphics");
 	
 
 	list_modules.push_back(window);
 	list_modules.push_back(input);
 	list_modules.push_back(camera);
+	list_modules.push_back(editor);
 	list_modules.push_back(graphics);
 }
 

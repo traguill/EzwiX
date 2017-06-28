@@ -465,7 +465,7 @@ namespace ImGui
     // Obsolete (will be removed)
 #ifndef IMGUI_DISABLE_OBSOLETE_FUNCTIONS
     static inline bool      CollapsingHeader(const char* label, const char* str_id, bool framed = true, bool default_open = false) { (void)str_id; (void)framed; ImGuiTreeNodeFlags default_open_flags = 1<<5; return CollapsingHeader(label, (default_open ? default_open_flags : 0)); } // OBSOLETE 1.49+
-    static inline ImFont*   GetWindowFont() { return GetFont(); }                              // OBSOLETE 1.48+
+   // static inline ImFont*   GetWindowFont() { return GetFont(); }                              // OBSOLETE 1.48+
     static inline float     GetWindowFontSize() { return GetFontSize(); }                      // OBSOLETE 1.48+
     static inline void      SetScrollPosHere() { SetScrollHere(); }                            // OBSOLETE 1.42+
     static inline bool      GetWindowCollapsed() { return ImGui::IsWindowCollapsed(); }        // OBSOLETE 1.39+

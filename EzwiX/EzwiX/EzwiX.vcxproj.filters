@@ -49,6 +49,9 @@
     <Filter Include="Source Files\Snippets">
       <UniqueIdentifier>{33e74d1b-60cf-4125-a48e-7e1a59e087b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Editor">
+      <UniqueIdentifier>{01247542-6a1d-4824-9346-9297a747185b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -215,6 +218,15 @@
     </ClCompile>
     <ClCompile Include="ModuleCamera.cpp">
       <Filter>Source Files\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleEditor.cpp">
+      <Filter>Source Files\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Console.cpp">
+      <Filter>Source Files\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Source Files\Editor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -475,6 +487,15 @@
     </ClInclude>
     <ClInclude Include="ModuleCamera.h">
       <Filter>Source Files\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleEditor.h">
+      <Filter>Source Files\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Console.h">
+      <Filter>Source Files\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Source Files\Editor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

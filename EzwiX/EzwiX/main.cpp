@@ -3,14 +3,7 @@
 
 #include "Application.h"
 #include "log.h"
-
-/*#include <d3d11.h>
-#include <d3dx11.h>
-#include <d3dx10.h>
-
-#pragma comment (lib, "d3d11.lib")
-#pragma comment (lib, "d3dx11.lib")
-#pragma comment (lib, "d3dx10.lib")*/
+#include "Console.h"
 
 enum main_state
 {
@@ -20,7 +13,8 @@ enum main_state
 	MAIN_EXIT
 };
 
-Application* App;
+Application* App = nullptr;
+Console* console = nullptr;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -71,6 +65,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 
 	delete App;
+	delete console;
 
 	return 0;
 }

@@ -64,8 +64,8 @@ bool ModuleWindow::Init()
 	else
 	{
 		//Set windowed default resolution (for now it's this)
-		screen_width = 800;
-		screen_height = 600;
+		screen_width = 1280;
+		screen_height = 720;
 
 		pos_x = (GetSystemMetrics(SM_CXSCREEN) - screen_width) / 2;
 		pos_y = (GetSystemMetrics(SM_CYSCREEN) - screen_height) / 2;
