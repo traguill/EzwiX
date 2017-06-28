@@ -5,6 +5,7 @@
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
 #include "ModuleGraphics.h"
+#include "ModuleCamera.h"
 
 #include "Random.h"
 
@@ -14,10 +15,13 @@ Application::Application()
 
 	window = new ModuleWindow("window");
 	input = new ModuleInput("input");
+	camera = new ModuleCamera("camera");
 	graphics = new ModuleGraphics("graphics");
+	
 
 	list_modules.push_back(window);
 	list_modules.push_back(input);
+	list_modules.push_back(camera);
 	list_modules.push_back(graphics);
 }
 
@@ -84,10 +88,26 @@ update_status Application::UpdateFrame()
 
 	vector<Module*>::iterator module = list_modules.begin();
 
-	//TODO: Do the same for preupdate and postupdate
+	//PreUpdate
 	for (module; module != list_modules.end(); ++module)
 	{
+		ret = (*module)->PreUpdate();
+		if (ret != update_status::UPDATE_CONTINUE)
+			return ret;
+	}
+
+	//Update
+	for (module = list_modules.begin(); module != list_modules.end(); ++module)
+	{
 		ret = (*module)->Update();
+		if (ret != update_status::UPDATE_CONTINUE)
+			return ret;
+	}
+
+	//PostUpdate
+	for (module = list_modules.begin(); module != list_modules.end(); ++module)
+	{
+		ret = (*module)->PostUpdate();
 		if (ret != update_status::UPDATE_CONTINUE)
 			return ret;
 	}

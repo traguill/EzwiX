@@ -46,6 +46,9 @@
     <Filter Include="3rdParty\Json">
       <UniqueIdentifier>{88a00d32-06bc-4516-96e1-c492e1960e2e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Snippets">
+      <UniqueIdentifier>{33e74d1b-60cf-4125-a48e-7e1a59e087b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -203,6 +206,15 @@
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Source Files\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentMesh.cpp">
+      <Filter>Source Files\GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderClass.cpp">
+      <Filter>Source Files\Modules\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleCamera.cpp">
+      <Filter>Source Files\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -452,14 +464,20 @@
     <ClInclude Include="GameObject.h">
       <Filter>Source Files\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentMesh.h">
+      <Filter>Source Files\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderClass.h">
+      <Filter>Source Files\Modules\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleCamera.h">
+      <Filter>Source Files\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Color.vs">
-      <Filter>Source Files\Shaders\Color</Filter>
-    </None>
-    <None Include="Color.ps">
-      <Filter>Source Files\Shaders\Color</Filter>
-    </None>
     <None Include="MathGeoLib\include\Geometry\KDTree.inl">
       <Filter>3rdParty\MathGeoLib</Filter>
     </None>
@@ -481,5 +499,16 @@
     <None Include="MathGeoLib\include\Math\Matrix.inl">
       <Filter>3rdParty\MathGeoLib</Filter>
     </None>
+    <None Include="Game\Color.vs">
+      <Filter>Source Files\Shaders\Color</Filter>
+    </None>
+    <None Include="Game\Color.ps">
+      <Filter>Source Files\Shaders\Color</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="ResultFailed.snippet">
+      <Filter>Source Files\Snippets</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

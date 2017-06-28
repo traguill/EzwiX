@@ -8,6 +8,7 @@ class Module;
 class ModuleWindow;
 class ModuleInput;
 class ModuleGraphics;
+class ModuleCamera;
 
 class Random;
 
@@ -47,6 +48,7 @@ public:
 	ModuleWindow* window = nullptr;
 	ModuleInput* input = nullptr;
 	ModuleGraphics* graphics = nullptr;
+	ModuleCamera* camera = nullptr;
 
 	//Other
 	Random* rnd = nullptr;
