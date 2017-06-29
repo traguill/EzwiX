@@ -6,8 +6,15 @@ build:
   project: EzWix/EzwiX.sln
   parallel: true
   verbosity: normal
+before_package:
+- ps: Copy-Item C:\projects\EzwiX\EzwiX\$env:CONFIGURATION\EzwiX.exe C:\projects\EzwiX\EzwiX\EzwiX\Game\
+artifacts:
+- path: EzwiX\EzwiX\Game
+  name: EzwiX
 deploy:
 - provider: GitHub
   auth_token:
     secure: wKG6u21H39u1crHxx8yqYksERO2NJvsZOExtnBb83DXrzxx/UAkPZaZjqWK1D4ON
   force_update: true
+  on:
+    CONFIGURATION: Release
