@@ -52,6 +52,9 @@
     <Filter Include="Source Files\Editor">
       <UniqueIdentifier>{01247542-6a1d-4824-9346-9297a747185b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shaders\Texture">
+      <UniqueIdentifier>{79ad20e9-5a61-4014-b78d-1ab999e5f940}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -227,6 +230,12 @@
     </ClCompile>
     <ClCompile Include="Window.cpp">
       <Filter>Source Files\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentTexture.cpp">
+      <Filter>Source Files\GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureShaderClass.cpp">
+      <Filter>Source Files\Modules\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -497,6 +506,12 @@
     <ClInclude Include="Window.h">
       <Filter>Source Files\Editor</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentTexture.h">
+      <Filter>Source Files\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureShaderClass.h">
+      <Filter>Source Files\Modules\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\include\Geometry\KDTree.inl">
@@ -525,6 +540,12 @@
     </None>
     <None Include="Game\Color.ps">
       <Filter>Source Files\Shaders\Color</Filter>
+    </None>
+    <None Include="Game\Texture.ps">
+      <Filter>Source Files\Shaders\Texture</Filter>
+    </None>
+    <None Include="Game\Texture.vs">
+      <Filter>Source Files\Shaders\Texture</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

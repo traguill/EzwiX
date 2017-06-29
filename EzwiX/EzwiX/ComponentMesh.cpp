@@ -55,30 +55,36 @@ void ComponentMesh::Load(Data & conf)
 
 void ComponentMesh::InitializeBuffers(ID3D11Device * device)
 {
-	//For now we draw a triangle
+	//For now we draw a quad
 	
 	HRESULT result;
 
-	vertex_count = 3;
-	index_count = 3;
+	vertex_count = 4;
+	index_count = 6;
 
 	VertexType* vertices = new VertexType[vertex_count];
 	unsigned long* indices = new unsigned long[index_count];
 
 	//Vertices
-	vertices[0].position = D3DXVECTOR3(-1.0f, -1.0f, 0.0f); //Left
-	vertices[0].color = D3DXVECTOR4(0.0f, 1.0f, 0.0f, 1.0f);
+	vertices[0].position = D3DXVECTOR3(-1.0f, -1.0f, 0.0f); //Left - bot
+	vertices[0].texture = D3DXVECTOR2(0.0f, 1.0f);
 
-	vertices[1].position = D3DXVECTOR3(0.0f, 1.0f, 0.0f); //Middle
-	vertices[1].color = D3DXVECTOR4(0.0f, 1.0f, 0.0f, 1.0f);
+	vertices[1].position = D3DXVECTOR3(-1.0f, 1.0f, 0.0f); //left - top
+	vertices[1].texture = D3DXVECTOR2(0.0f, 0.0f);
 
-	vertices[2].position = D3DXVECTOR3(1.0f, -1.0f, 0.0f); //Right
-	vertices[2].color = D3DXVECTOR4(0.0f, 1.0f, 0.0f, 1.0f);
+	vertices[2].position = D3DXVECTOR3(1.0f, 1.0f, 0.0f); //Right - top
+	vertices[2].texture = D3DXVECTOR2(1.0f, 0.0f);
+
+	vertices[3].position = D3DXVECTOR3(1.0f, -1.0f, 0.0f); //Right - bot
+	vertices[3].texture = D3DXVECTOR2(1.0f, 1.0f);
 
 	//Indices
 	indices[0] = 0;
 	indices[1] = 1;
-	indices[2] = 2;
+	indices[2] = 3;
+	indices[3] = 3;
+	indices[4] = 1;
+	indices[5] = 2;
 
 	//Set up the description of the vertex buffer
 	D3D11_BUFFER_DESC v_buffer_desc;

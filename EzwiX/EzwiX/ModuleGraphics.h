@@ -5,7 +5,9 @@
 
 class D3DModule;
 class ComponentMesh; //TODO: remove. It's here for testing
+class ComponentTexture; //TODO: remove. It's here for testing
 class ShaderClass;
+class TextureShaderClass;
 
 class ModuleGraphics : public Module
 {
@@ -32,8 +34,10 @@ private:
 	float screen_near = 0.1f;
 	bool vsync_enabled = true;
 
-	ComponentMesh* model = nullptr;
-	ShaderClass* shader_class = nullptr;
+	ComponentMesh* model = nullptr; //Testing
+	ComponentTexture* texture = nullptr; //Testing
+	//ShaderClass* shader_class = nullptr;
+	TextureShaderClass* texture_shader = nullptr;
 };
 
 #endif 

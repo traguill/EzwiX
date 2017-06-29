@@ -4,9 +4,12 @@
 
 #include "Application.h"
 #include "D3DModule.h"
-#include "ShaderClass.h"
 #include "ComponentMesh.h"
+#include "ComponentTexture.h"
 #include "ModuleCamera.h"
+
+#include "ShaderClass.h"
+#include "TextureShaderClass.h"
 
 #include "ImGui\imgui.h"
 #include "ImGui\imgui_impl_dx11.h"
@@ -36,10 +39,13 @@ bool ModuleGraphics::Init()
 	App->camera->SetPosition(0.0f, 0.0f, -10.0f); //Testing
 
 	model = new ComponentMesh(ComponentType::C_MESH, nullptr); //Testing
+	texture = new ComponentTexture(ComponentType::C_TEXTURE, nullptr);//Testing
+	texture->Initialize(d3d->GetDevice(), "img.dds");
+	
+	//shader_class = new ShaderClass();
+	texture_shader = new TextureShaderClass();
 
-	shader_class = new ShaderClass();
-
-	ret = shader_class->Init(d3d->GetDevice(), App->hWnd);
+	ret = texture_shader->Init(d3d->GetDevice(), App->hWnd);
 	if (!ret)
 	{
 		LOG("Could not initialzie Shader Class");
@@ -57,9 +63,9 @@ bool ModuleGraphics::CleanUp()
 
 	ImGui_ImplDX11_Shutdown();
 
-	shader_class->CleanUp();
-	delete shader_class;
-	shader_class = nullptr;
+	texture_shader->CleanUp();
+	delete texture_shader;
+	texture_shader = nullptr;
 
 	delete model;
 	model = nullptr;
@@ -89,7 +95,7 @@ update_status ModuleGraphics::PostUpdate()
 
 	//Render all the objects. For now only a triangle
 	model->Render();
-	shader_class->Render(d3d->GetDeviceContext(), model->GetIndexCount(), projection_matrix, view_matrix, world_matrix);
+	texture_shader->Render(d3d->GetDeviceContext(), model->GetIndexCount(), world_matrix, view_matrix, projection_matrix, texture->GetTexture());
 
 	ImGui::Render();
 	d3d->EndScene();

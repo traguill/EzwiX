@@ -35,7 +35,7 @@ private:
 	struct VertexType
 	{
 		D3DXVECTOR3 position;
-		D3DXVECTOR4 color;
+		D3DXVECTOR2 texture;
 	};
 
 	ID3D11Buffer* vertex_buffer = nullptr; 

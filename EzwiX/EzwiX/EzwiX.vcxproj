@@ -122,6 +122,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentMesh.cpp" />
+    <ClCompile Include="ComponentTexture.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="D3DModule.cpp" />
     <ClCompile Include="Data.cpp" />
@@ -176,12 +177,14 @@
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="ShaderClass.cpp" />
+    <ClCompile Include="TextureShaderClass.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentMesh.h" />
+    <ClInclude Include="ComponentTexture.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="D3DModule.h" />
     <ClInclude Include="Data.h" />
@@ -267,11 +270,14 @@
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="ShaderClass.h" />
+    <ClInclude Include="TextureShaderClass.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\Color.ps" />
     <None Include="Game\Color.vs" />
+    <None Include="Game\Texture.ps" />
+    <None Include="Game\Texture.vs" />
     <None Include="MathGeoLib\include\Geometry\KDTree.inl" />
     <None Include="MathGeoLib\include\Geometry\QuadTree.inl" />
     <None Include="MathGeoLib\include\Geometry\TriangleMesh_IntersectRay_AVX.inl" />
