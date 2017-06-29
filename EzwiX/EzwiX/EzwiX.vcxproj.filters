@@ -55,6 +55,9 @@
     <Filter Include="Source Files\Shaders\Texture">
       <UniqueIdentifier>{79ad20e9-5a61-4014-b78d-1ab999e5f940}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Modules\Performance">
+      <UniqueIdentifier>{a6067765-498f-4eca-9e27-aebf649d270c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -236,6 +239,9 @@
     </ClCompile>
     <ClCompile Include="TextureShaderClass.cpp">
       <Filter>Source Files\Modules\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleFPS.cpp">
+      <Filter>Source Files\Modules\Performance</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -511,6 +517,9 @@
     </ClInclude>
     <ClInclude Include="TextureShaderClass.h">
       <Filter>Source Files\Modules\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleFPS.h">
+      <Filter>Source Files\Modules\Performance</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

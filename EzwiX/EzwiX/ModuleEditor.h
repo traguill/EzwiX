@@ -17,7 +17,13 @@ public:
 
 private:
 
+	void DrawStatistics()const;
+
+private:
+
 	std::vector<Window*> windows;
+
+	bool stats_enabled = true;
 };
 
 #endif // !__MODULE_EDITOR_H__

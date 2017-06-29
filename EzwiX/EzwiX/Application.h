@@ -10,6 +10,7 @@ class ModuleInput;
 class ModuleGraphics;
 class ModuleCamera;
 class ModuleEditor;
+class ModuleFPS;
 
 class Random;
 
@@ -51,6 +52,7 @@ public:
 	ModuleGraphics* graphics = nullptr;
 	ModuleCamera* camera = nullptr;
 	ModuleEditor* editor = nullptr;
+	ModuleFPS* fps = nullptr;
 
 	//Other
 	Random* rnd = nullptr;

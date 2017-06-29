@@ -126,6 +126,7 @@
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="D3DModule.cpp" />
     <ClCompile Include="Data.cpp" />
+    <ClCompile Include="ModuleFPS.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imgui_demo.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="Console.h" />
     <ClInclude Include="D3DModule.h" />
     <ClInclude Include="Data.h" />
+    <ClInclude Include="ModuleFPS.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="ImGui\imconfig.h" />
