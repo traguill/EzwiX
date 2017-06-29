@@ -11,6 +11,7 @@ class ModuleGraphics;
 class ModuleCamera;
 class ModuleEditor;
 class ModuleFPS;
+class ModuleCPU;
 
 class Random;
 
@@ -53,6 +54,7 @@ public:
 	ModuleCamera* camera = nullptr;
 	ModuleEditor* editor = nullptr;
 	ModuleFPS* fps = nullptr;
+	ModuleCPU* m_cpu = nullptr;
 
 	//Other
 	Random* rnd = nullptr;

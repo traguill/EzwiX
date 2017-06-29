@@ -243,6 +243,9 @@
     <ClCompile Include="ModuleFPS.cpp">
       <Filter>Source Files\Modules\Performance</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleCPU.cpp">
+      <Filter>Source Files\Modules\Performance</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -519,6 +522,9 @@
       <Filter>Source Files\Modules\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="ModuleFPS.h">
+      <Filter>Source Files\Modules\Performance</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleCPU.h">
       <Filter>Source Files\Modules\Performance</Filter>
     </ClInclude>
   </ItemGroup>

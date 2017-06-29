@@ -20,5 +20,7 @@ private:
 	int count = 0;
 	unsigned long start_time = 0;
 
+	//TODO: Cap FPS
+
 };
 #endif // !__MODULE_FPS_H__

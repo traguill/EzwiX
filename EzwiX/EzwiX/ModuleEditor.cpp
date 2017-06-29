@@ -5,6 +5,7 @@
 
 #include "ModuleFPS.h"
 #include "ModuleWindow.h"
+#include "ModuleCPU.h"
 
 #include "ImGui\imgui.h"
 
@@ -53,5 +54,6 @@ void ModuleEditor::DrawStatistics() const
 	bool open = true;
 	ImGui::Begin("##Statistics", &open, ImVec2(100, 50), 0.6f, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings);
 	ImGui::Text("FPS: %i", App->fps->GetFPS());
+	ImGui::Text("CPU: %i %%", App->m_cpu->GetCPUUsage());
 	ImGui::End();
 }

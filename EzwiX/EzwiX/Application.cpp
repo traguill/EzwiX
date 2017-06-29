@@ -8,6 +8,7 @@
 #include "ModuleCamera.h"
 #include "ModuleEditor.h"
 #include "ModuleFPS.h"
+#include "ModuleCPU.h"
 
 #include "Random.h"
 
@@ -16,6 +17,7 @@ Application::Application()
 	rnd = new Random();
 
 	fps = new ModuleFPS("fps");
+	m_cpu = new ModuleCPU("cpu");
 
 	window = new ModuleWindow("window");
 	input = new ModuleInput("input");
@@ -24,6 +26,7 @@ Application::Application()
 	graphics = new ModuleGraphics("graphics");
 	
 	list_modules.push_back(fps);
+	list_modules.push_back(m_cpu);
 
 	list_modules.push_back(window);
 	list_modules.push_back(input);
