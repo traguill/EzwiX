@@ -9,7 +9,7 @@ build:
 before_package:
 - ps: Copy-Item C:\projects\EzwiX\EzwiX\$env:CONFIGURATION\EzwiX.exe C:\projects\EzwiX\EzwiX\EzwiX\Game\
 artifacts:
-- path: Game
+- path: EzwiX\EzwiX\Game
   name: EzwiX
 deploy:
 - provider: GitHub
