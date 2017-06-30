@@ -9,6 +9,7 @@
 #include "ModuleEditor.h"
 #include "ModuleFPS.h"
 #include "ModuleCPU.h"
+#include "ModuleTimer.h"
 
 #include "Random.h"
 
@@ -16,6 +17,7 @@ Application::Application()
 {
 	rnd = new Random();
 
+	timer = new ModuleTimer("timer");
 	fps = new ModuleFPS("fps");
 	m_cpu = new ModuleCPU("cpu");
 
@@ -25,6 +27,7 @@ Application::Application()
 	editor = new ModuleEditor("editor");
 	graphics = new ModuleGraphics("graphics");
 	
+	list_modules.push_back(timer);
 	list_modules.push_back(fps);
 	list_modules.push_back(m_cpu);
 
