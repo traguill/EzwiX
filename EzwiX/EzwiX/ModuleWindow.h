@@ -15,6 +15,8 @@ public:
 	int GetScreenWidth()const;
 	int GetScreenHeight()const;
 
+	void GetWindowUpperLeftPosition(int& x, int& y)const;
+
 	bool IsVsyncEnabled()const;
 	bool IsFullScreen()const;
 
@@ -26,6 +28,10 @@ private:
 	//TODO: Save this variables in a configuration file
 	bool full_screen = false;
 	bool vsync_enabled = true;
+
+public:
+	int win_pos_x = 0; //Upper left points
+	int win_pos_y = 0;
 
 };
 

@@ -92,10 +92,11 @@ update_status Application::Update()
 
 update_status Application::UpdateFrame()
 {
-	if (App->input->IsKeyDown(VK_ESCAPE))
+	//Check escape
+	/*if (App->input->IsKeyDown(VK_ESCAPE))
 	{
 		return update_status::UPDATE_STOP;
-	}
+	}*/
 	
 	update_status ret = update_status::UPDATE_CONTINUE;
 
@@ -148,16 +149,6 @@ LRESULT Application::MessageHandler(HWND hWnd, UINT message, WPARAM wParam, LPAR
 {
 	switch (message)
 	{
-		case WM_KEYDOWN:
-		{
-			App->input->KeyDown((unsigned int)wParam);
-			return 0;
-		}
-		case WM_KEYUP:
-		{
-			App->input->KeyUp((unsigned int)wParam);
-			return 0;
-		}
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
 	}

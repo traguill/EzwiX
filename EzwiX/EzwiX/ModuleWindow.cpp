@@ -76,7 +76,17 @@ bool ModuleWindow::Init()
 		App->hWnd = CreateWindowEx(WS_EX_APPWINDOW, App->app_name, App->app_name, WS_OVERLAPPEDWINDOW, pos_x, pos_y, wr.right - wr.left, wr.bottom - wr.top, NULL, NULL, App->hInstance, NULL);
 	}
 
-	
+	//Set the window upper left position in the screen coordinates
+	RECT wnd_rect;
+	bool client_rect_ret = GetClientRect(App->hWnd, &wnd_rect);
+	if (client_rect_ret == false)
+	{
+		LOG("Window Init ERROR while getting the client rect");
+		return false;
+	}
+
+	win_pos_x = pos_x;
+	win_pos_y = pos_y;
 
 	ShowWindow(App->hWnd, SW_SHOW);
 	SetForegroundWindow(App->hWnd);
@@ -118,6 +128,12 @@ int ModuleWindow::GetScreenHeight() const
 	return screen_height;
 }
 
+void ModuleWindow::GetWindowUpperLeftPosition(int & x, int & y) const
+{
+	x = win_pos_x;
+	y = win_pos_y;
+}
+
 bool ModuleWindow::IsVsyncEnabled() const
 {
 	return vsync_enabled;
@@ -144,6 +160,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam)
 	{
 		PostQuitMessage(0);
 		return 0;
+	}
+	case WM_MOVE:
+	{
+		App->window->win_pos_x = (int)(short)LOWORD(lparam);
+		App->window->win_pos_y = (int)(short)HIWORD(lparam);
+		return true;
 	}
 	default:
 	{

@@ -1,6 +1,13 @@
 #ifndef __MODULE_INPUT_H__
 #define __MODULE_INPUT_H__
 
+#define DIRECTINPUT_VERSION 0x0800
+
+#pragma comment(lib, "dinput8.lib")
+#pragma comment(lib, "dxguid.lib")
+
+#include <dinput.h>
+
 #include "Module.h"
 
 class ModuleInput : public Module
@@ -12,13 +19,31 @@ public:
 	bool Init();
 	bool CleanUp();
 
-	void KeyDown(unsigned int id);
-	void KeyUp(unsigned int id);
+	update_status PreUpdate();
 
-	bool IsKeyDown(unsigned int id);
+	void GetMousePosition(int& x, int& y)const;
 
 private:
-	bool keys[256]; //TODO: Keys with state (UP, DOWN, REPEAT)
+
+	bool ReadKeyboard();
+	bool ReadMouse();
+
+	void ProcessMouseInput();
+
+private:
+
+	IDirectInput8* direct_input = nullptr;
+	IDirectInputDevice8* keyboard = nullptr;
+	IDirectInputDevice8* mouse = nullptr;
+
+	unsigned char keyboard_state[256];
+	int mouse_state_x;
+	int mouse_state_y;
+
+	int screen_width;
+	int screen_height;
+	int mouse_x;
+	int mouse_y;
 
 };
 
