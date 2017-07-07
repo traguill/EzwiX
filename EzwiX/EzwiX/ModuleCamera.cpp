@@ -1,6 +1,9 @@
 #include "ModuleCamera.h"
 
 #include "Globals.h"
+#include "log.h"
+
+#include "ModuleInput.h"
 
 ModuleCamera::ModuleCamera(const char * name, bool start_enabled) : Module(name, start_enabled)
 {

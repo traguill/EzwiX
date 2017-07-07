@@ -10,6 +10,14 @@
 
 #include "Module.h"
 
+enum KEY_STATE
+{
+	KEY_IDLE = 0,
+	KEY_DOWN,
+	KEY_REPEAT,
+	KEY_UP
+};
+
 class ModuleInput : public Module
 {
 public:
@@ -22,6 +30,7 @@ public:
 	update_status PreUpdate();
 
 	void GetMousePosition(int& x, int& y)const;
+	KEY_STATE GetKey(int key_id)const;
 
 private:
 
@@ -44,6 +53,8 @@ private:
 	int screen_height;
 	int mouse_x;
 	int mouse_y;
+
+	KEY_STATE* keyboard_keys = nullptr;
 
 };
 

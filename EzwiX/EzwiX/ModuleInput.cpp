@@ -7,10 +7,13 @@
 
 ModuleInput::ModuleInput(const char * name, bool start_enabled) : Module(name, start_enabled)
 {
+	keyboard_keys = new KEY_STATE[256];
+	ZeroMemory(keyboard_keys, sizeof(keyboard_keys));
 }
 
 ModuleInput::~ModuleInput()
 {
+	delete[] keyboard_keys;
 }
 
 bool ModuleInput::Init()
@@ -126,6 +129,11 @@ void ModuleInput::GetMousePosition(int & x, int & y) const
 	y = mouse_y;
 }
 
+KEY_STATE ModuleInput::GetKey(int key_id) const
+{
+	return keyboard_keys[key_id];
+}
+
 bool ModuleInput::ReadKeyboard()
 {
 	HRESULT result;
@@ -144,6 +152,27 @@ bool ModuleInput::ReadKeyboard()
 			return false;
 		}
 	}
+	else
+	{
+		for (int i = 0; i < 256; ++i)
+		{
+			if (keyboard_state[i] != 0) //Pressed
+			{
+				if (keyboard_keys[i] == KEY_IDLE)
+					keyboard_keys[i] = KEY_DOWN;
+				else
+					keyboard_keys[i] = KEY_REPEAT;
+			}
+			else //Not pressed
+			{
+				if (keyboard_keys[i] == KEY_REPEAT || keyboard_keys[i] == KEY_DOWN)
+					keyboard_keys[i] = KEY_UP;
+				else
+					keyboard_keys[i] = KEY_IDLE;
+			}
+		}
+	}
+
 
 	return true;
 }
