@@ -149,6 +149,53 @@ LRESULT Application::MessageHandler(HWND hWnd, UINT message, WPARAM wParam, LPAR
 {
 	switch (message)
 	{
+		//Keys
+		case WM_KEYDOWN:
+		{
+			App->input->MSGKeyDown((unsigned int)wParam);
+			return 0;
+		}
+		case WM_KEYUP:
+		{
+			App->input->MSGKeyUp((unsigned int)wParam);
+			return 0;
+		}
+		//Mouse
+		case WM_MOUSEWHEEL:
+		{
+			App->input->MSGMouseZ((int)GET_WHEEL_DELTA_WPARAM(wParam));
+			return 0;
+		}
+		case WM_LBUTTONDOWN:
+		{
+			App->input->MSGMouseButton(MOUSE_BUTTON_LEFT, true);
+			return 0;
+		}
+		case WM_LBUTTONUP:
+		{
+			App->input->MSGMouseButton(MOUSE_BUTTON_LEFT, false);
+			return 0;
+		}
+		case WM_RBUTTONDOWN:
+		{
+			App->input->MSGMouseButton(MOUSE_BUTTON_RIGHT, true);
+			return 0;
+		}
+		case WM_RBUTTONUP:
+		{
+			App->input->MSGMouseButton(MOUSE_BUTTON_RIGHT, false);
+			return 0;
+		}
+		case WM_MBUTTONDOWN:
+		{
+			App->input->MSGMouseButton(MOUSE_BUTTON_MIDDLE, true);
+			return 0;
+		}
+		case WM_MBUTTONUP:
+		{
+			App->input->MSGMouseButton(MOUSE_BUTTON_MIDDLE, false);
+			return 0;
+		}
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
 	}

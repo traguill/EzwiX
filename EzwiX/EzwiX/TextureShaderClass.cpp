@@ -178,8 +178,8 @@ bool TextureShaderClass::SetShaderParameters(ID3D11DeviceContext * device_contex
 
 	//Transpose the matrices before passing to the shader
 	D3DXMatrixTranspose(&model, &model);
-	D3DXMatrixTranspose(&view, &view);
-	D3DXMatrixTranspose(&projection, &projection);
+	
+	//NOTE: View and projection are already transposed.
 
 	D3D11_MAPPED_SUBRESOURCE mapped_resource;
 	result = device_context->Map(matrix_buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped_resource);

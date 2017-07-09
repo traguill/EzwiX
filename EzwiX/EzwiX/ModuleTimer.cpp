@@ -31,7 +31,7 @@ update_status ModuleTimer::PreUpdate()
 	QueryPerformanceCounter((LARGE_INTEGER*)&current_time);
 	
 	float difference = (float)(current_time - start_time);
-	delta_time = difference / ticks_per_ms;
+	delta_time = (difference / ticks_per_ms) / 1000.0f;
 
 	start_time = current_time;
 

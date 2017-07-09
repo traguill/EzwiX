@@ -36,8 +36,6 @@ bool ModuleGraphics::Init()
 		return false;
 	}
 
-	App->camera->SetPosition(0.0f, 0.0f, -10.0f); //Testing
-
 	model = new ComponentMesh(ComponentType::C_MESH, nullptr); //Testing
 	texture = new ComponentTexture(ComponentType::C_TEXTURE, nullptr);//Testing
 	texture->Initialize(d3d->GetDevice(), "img.dds");
@@ -91,7 +89,7 @@ update_status ModuleGraphics::PostUpdate()
 
 	App->camera->GetViewMatrix(view_matrix);
 	d3d->GetWorldMatrix(world_matrix);
-	d3d->GetProjectionMatrix(projection_matrix);
+	App->camera->GetProjectionMatrix(projection_matrix);
 
 	//Render all the objects. For now only a triangle
 	model->Render();

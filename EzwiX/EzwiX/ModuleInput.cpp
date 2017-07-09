@@ -9,6 +9,12 @@ ModuleInput::ModuleInput(const char * name, bool start_enabled) : Module(name, s
 {
 	keyboard_keys = new KEY_STATE[256];
 	ZeroMemory(keyboard_keys, sizeof(keyboard_keys));
+
+	mouse_buttons = new KEY_STATE[3];
+	ZeroMemory(mouse_buttons, sizeof(mouse_buttons));
+
+	memset(&keys, false, sizeof(keys));
+	memset(&mouse_input, false, sizeof(mouse_input));
 }
 
 ModuleInput::~ModuleInput()
@@ -25,78 +31,8 @@ bool ModuleInput::Init()
 	screen_height = App->window->GetScreenHeight();
 	screen_width = App->window->GetScreenWidth();
 
-	mouse_x = mouse_y = 0;
-
-	result = DirectInput8Create(App->hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&direct_input, NULL);
-	if (FAILED(result))
-	{
-		LOG("Input ERROR while creating the main direct input interface");
-		return false;
-	}
-
-	//Keyboard -----------------------------------------------------------------------------------------------------
-	result = direct_input->CreateDevice(GUID_SysKeyboard, &keyboard, NULL);
-	if (FAILED(result))
-	{
-		LOG("Input ERROR while creating the keyboard direct input interface");
-		return false;
-	}
-
-	//Set data format. Use the predefined data format for the keyboard
-	result = keyboard->SetDataFormat(&c_dfDIKeyboard);
-	if (FAILED(result))
-	{
-		LOG("Input ERROR while setting the data format for the keyboard");
-		return false;
-	}
-
-	//Set the cooperative level of the keyboard to not share with other programs. To share it with other programs set it to: DISCL_NONEXCLUSIVE
-	result = keyboard->SetCooperativeLevel(App->hWnd, DISCL_FOREGROUND | DISCL_EXCLUSIVE);
-	if (FAILED(result))
-	{
-		LOG("Input ERROR while setting the cooperative level of the keyboard");
-		return false;
-	}
-
-	//Acquire the keyboard to use it
-	result = keyboard->Acquire();
-	if (FAILED(result))
-	{
-		LOG("Input ERROR while acquiring the keyboard.");
-		return false;
-	}
-
-	//Mouse -------------------------------------------------------------------------------------------------------------------------------
-	result = direct_input->CreateDevice(GUID_SysMouse, &mouse, NULL);
-	if (FAILED(result))
-	{
-		LOG("Input ERROR while creating the direct input interface for the mouse.");
-		return false;
-	}
-
-	//Predefined data format for the mouse
-	result = mouse->SetDataFormat(&c_dfDIMouse);
-	if (FAILED(result))
-	{
-		LOG("Input ERROR while setting the data format for the mouse.");
-		return false;
-	}
-	
-	//Cooperative level of the mouse shared with other programs
-	result = mouse->SetCooperativeLevel(App->hWnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
-	if (FAILED(result))
-	{
-		LOG("Input ERROR while setting the cooperative level for the mouse");
-		return false;
-	}
-
-	//Acquire the mouse
-	result = mouse->Acquire();
-	if (FAILED(result))
-	{
-		LOG("Input ERROR while acquiring the mouse.");
-		return false;
-	}
+	mouse_x = mouse_y = mouse_z = 0;
+	mouse_motion_x = mouse_motion_y = 0;
 
 	return true;
 }
@@ -104,10 +40,6 @@ bool ModuleInput::Init()
 bool ModuleInput::CleanUp()
 {
 	LOG("Clean Up Input\n");
-
-	RELEASE(mouse);
-	RELEASE(keyboard);
-	RELEASE(direct_input);
 
 	return true;
 }
@@ -119,6 +51,18 @@ update_status ModuleInput::PreUpdate()
 	bool ret_mouse = ReadMouse();
 	if (ret_mouse)
 		ProcessMouseInput();
+
+	//Quit
+	if (keyboard_keys[KEY_ESC] == KEY_UP)
+		return update_status::UPDATE_STOP;
+
+	return update_status::UPDATE_CONTINUE;
+}
+
+update_status ModuleInput::PostUpdate()
+{
+	mouse_z = 0;
+	mouse_motion_x = mouse_motion_y = 0;
 
 	return update_status::UPDATE_CONTINUE;
 }
@@ -134,51 +78,68 @@ KEY_STATE ModuleInput::GetKey(int key_id) const
 	return keyboard_keys[key_id];
 }
 
+int ModuleInput::GetMouseWheel() const
+{
+	return mouse_z;
+}
+
+void ModuleInput::GetMouseMotion(int & x, int & y) const
+{
+	x = mouse_motion_x;
+	y = mouse_motion_y;
+}
+
+KEY_STATE ModuleInput::GetMouseButton(MOUSE_BUTTON_ID id) const
+{
+	return mouse_buttons[id];
+}
+
+void ModuleInput::MSGKeyDown(unsigned int id)
+{
+	keys[id] = true;
+}
+
+void ModuleInput::MSGKeyUp(unsigned int id)
+{
+	keys[id] = false;
+}
+
+void ModuleInput::MSGMouseZ(int value)
+{
+	mouse_z = value / 120; //Uses multiples of 120 to track the wheel movement. Positive->Forward (away from the user) / Negative->Backward (toward the user)
+}
+
+void ModuleInput::MSGMouseButton(MOUSE_BUTTON_ID button_id, bool down)
+{
+	mouse_input[button_id] = down;
+}
+
 bool ModuleInput::ReadKeyboard()
 {
-	HRESULT result;
-
-	result = keyboard->GetDeviceState(sizeof(keyboard_state), (LPVOID)&keyboard_state);
-	if (FAILED(result))
+	for (int i = 0; i < 256; ++i)
 	{
-		//Check if the keyboard lost focus or was not acquired. Try to get control back
-		if (result == DIERR_INPUTLOST || result == DIERR_NOTACQUIRED)
+		if (keys[i] == true) //Pressed
 		{
-			keyboard->Acquire();
+			if (keyboard_keys[i] == KEY_IDLE)
+				keyboard_keys[i] = KEY_DOWN;
+			else
+				keyboard_keys[i] = KEY_REPEAT;
 		}
-		else
+		else //Not pressed
 		{
-			LOG("Input ERROR: could not get the keyboard state");
-			return false;
+			if (keyboard_keys[i] == KEY_REPEAT || keyboard_keys[i] == KEY_DOWN)
+				keyboard_keys[i] = KEY_UP;
+			else
+				keyboard_keys[i] = KEY_IDLE;
 		}
 	}
-	else
-	{
-		for (int i = 0; i < 256; ++i)
-		{
-			if (keyboard_state[i] != 0) //Pressed
-			{
-				if (keyboard_keys[i] == KEY_IDLE)
-					keyboard_keys[i] = KEY_DOWN;
-				else
-					keyboard_keys[i] = KEY_REPEAT;
-			}
-			else //Not pressed
-			{
-				if (keyboard_keys[i] == KEY_REPEAT || keyboard_keys[i] == KEY_DOWN)
-					keyboard_keys[i] = KEY_UP;
-				else
-					keyboard_keys[i] = KEY_IDLE;
-			}
-		}
-	}
-
 
 	return true;
 }
 
 bool ModuleInput::ReadMouse()
 {
+	//Windows input. For mouse position
 	POINT point;
 	bool ret = GetCursorPos(&point);
 
@@ -188,16 +149,43 @@ bool ModuleInput::ReadMouse()
 		mouse_state_y = point.y;
 	}
 
-	return true;
+	for (int i = 0; i < 3; ++i)
+	{
+		if (mouse_input[i] == true) //Pressed
+		{
+			if (mouse_buttons[i] == KEY_IDLE)
+				mouse_buttons[i] = KEY_DOWN;
+			else
+				mouse_buttons[i] = KEY_REPEAT;
+		}
+		else //Not pressed
+		{
+			if (mouse_buttons[i] == KEY_REPEAT || mouse_buttons[i] == KEY_DOWN)
+				mouse_buttons[i] = KEY_UP;
+			else
+				mouse_buttons[i] = KEY_IDLE;
+		}
+	}
+
+	return ret;
 }
 
 void ModuleInput::ProcessMouseInput()
 {
+	//Mouse Position
 	int win_x, win_y;
-	App->window->GetWindowUpperLeftPosition(win_x, win_y);
+	App->window->GetWindowUpperLeftPosition(win_x, win_y); //OPTIMIZATION: Save this as a variable and only updated when receive the moving window message
 
-	mouse_x = mouse_state_x - win_x;
-	mouse_y = mouse_state_y - win_y;
+	int tmp_mouse_x, tmp_mouse_y;
+
+	tmp_mouse_x = mouse_state_x - win_x;
+	tmp_mouse_y = mouse_state_y - win_y;
+
+	mouse_motion_x = tmp_mouse_x - mouse_x;
+	mouse_motion_y = tmp_mouse_y - mouse_y;
+
+	mouse_x = tmp_mouse_x;
+	mouse_y = tmp_mouse_y;
 
 	//Check boundaries
 	if (mouse_x < 0) mouse_x = 0;

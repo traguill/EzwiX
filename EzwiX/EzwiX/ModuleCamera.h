@@ -3,6 +3,8 @@
 
 #include <d3dx10math.h>
 
+#include "MathGeoLib\include\MathGeoLib.h"
+
 #include "Module.h"
 
 class ModuleCamera : public Module
@@ -11,29 +13,33 @@ public:
 	ModuleCamera(const char* name, bool start_enabled = true);
 	~ModuleCamera();
 
+	bool Init();
 	update_status Update();
 
 	void SetPosition(float x, float y, float z);
+	void SetPosition(const math::float3& new_position);
 	void SetRotation(float x, float y, float z);
 
 	D3DXVECTOR3 GetPosition()const;
-	D3DXVECTOR3 GetRotation()const;
 
 	void GetViewMatrix(D3DXMATRIX& view);
+	void GetProjectionMatrix(D3DXMATRIX& projection);
+
+	void LookAt(const math::float3& point);
 
 private:
 
-	float position_x = 0.0f;
-	float position_y = 0.0f;
-	float position_z = 0.0f;
+	void CameraMovement();
 
-	float rotation_x = 0.0f;
-	float rotation_y = 0.0f;
-	float rotation_z = 0.0f;
+private:
 
-	D3DXMATRIX view_matrix;
+	math::float3 position;
+	math::float3 reference;
 
-	bool dirty = false;
+	float near_plane = 0.3f;
+	float far_plane = 300.0f;
+
+	math::Frustum frustum;
 
 };
 #endif // !__MODULE_CAMERA_H__
