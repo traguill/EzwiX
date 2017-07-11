@@ -9,7 +9,7 @@ public:
 	ModuleFileSystem(const char* name, bool start_enabled = true);
 	~ModuleFileSystem();
 
-	bool Load(const char* path, char** buffer)const;
+	unsigned int Load(const char* path, char** buffer)const;
 
 private:
 

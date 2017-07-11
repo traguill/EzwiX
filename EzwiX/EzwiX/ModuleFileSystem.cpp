@@ -6,10 +6,9 @@ ModuleFileSystem::ModuleFileSystem(const char* name, bool start_enabled) : Modul
 ModuleFileSystem::~ModuleFileSystem()
 {}
 
-bool ModuleFileSystem::Load(const char * path, char ** buffer) const
+unsigned int ModuleFileSystem::Load(const char * path, char ** buffer) const
 {
-	bool ret = false;
-
+	size_t result = 0;
 	FILE* file;
 	fopen_s(&file, path, "rb");
 	
@@ -22,15 +21,10 @@ bool ModuleFileSystem::Load(const char * path, char ** buffer) const
 		*buffer = new char[(unsigned int)size];
 		if (*buffer)
 		{
-			size_t result;
-
 			result = fread(*buffer, 1, size, file);
-
-			if (result == size)
-				ret = true;
 		}
 		fclose(file);
 	}
 
-	return ret;
+	return result;
 }

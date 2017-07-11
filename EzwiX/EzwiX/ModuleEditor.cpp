@@ -7,6 +7,8 @@
 #include "ModuleWindow.h"
 #include "ModuleCPU.h"
 
+#include "HierarchyWindow.h"
+
 //Testing
 #include "ModuleInput.h"
 
@@ -19,6 +21,15 @@ ModuleEditor::ModuleEditor(const char * name, bool start_enabled) : Module(name,
 
 ModuleEditor::~ModuleEditor()
 {
+}
+
+bool ModuleEditor::Init()
+{
+	layout = EDITOR_LAYOUT::MINIMAL; //TODO: Dislay different layout configurations for the windows. I'll do it another day...
+
+	windows.push_back(hierarchy = new HierarchyWindow());
+
+	return true;
 }
 
 update_status ModuleEditor::Update()

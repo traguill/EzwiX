@@ -14,6 +14,7 @@ class ModuleFPS;
 class ModuleCPU;
 class ModuleTimer;
 class ModuleFileSystem;
+class ModuleGameObjectManager;
 
 class Random;
 
@@ -59,6 +60,7 @@ public:
 	ModuleCPU* m_cpu = nullptr;
 	ModuleTimer* timer = nullptr;
 	ModuleFileSystem* file_system = nullptr;
+	ModuleGameObjectManager* gameobject_manager = nullptr;
 
 	//Other
 	Random* rnd = nullptr;

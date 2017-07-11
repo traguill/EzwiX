@@ -11,6 +11,7 @@
 #include "ModuleCPU.h"
 #include "ModuleTimer.h"
 #include "ModuleFileSystem.h"
+#include "ModuleGameObjectManager.h"
 
 #include "Random.h"
 
@@ -32,6 +33,7 @@ Application::Application()
 	editor = new ModuleEditor("editor");
 	graphics = new ModuleGraphics("graphics");
 	file_system = new ModuleFileSystem("file_system");
+	gameobject_manager = new ModuleGameObjectManager("gameobject_manager");
 	
 	list_modules.push_back(timer);
 	list_modules.push_back(fps);
@@ -41,6 +43,7 @@ Application::Application()
 	list_modules.push_back(window);
 	list_modules.push_back(input);
 	list_modules.push_back(camera);
+	list_modules.push_back(gameobject_manager);
 	list_modules.push_back(editor);
 	list_modules.push_back(graphics);
 }
