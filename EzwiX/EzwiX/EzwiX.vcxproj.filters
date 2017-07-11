@@ -58,6 +58,9 @@
     <Filter Include="Source Files\Modules\Performance">
       <UniqueIdentifier>{a6067765-498f-4eca-9e27-aebf649d270c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Importers">
+      <UniqueIdentifier>{744104d9-ed88-44c8-b541-e8120d1e2f08}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -248,6 +251,12 @@
     </ClCompile>
     <ClCompile Include="ModuleTimer.cpp">
       <Filter>Source Files\Modules\Performance</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshImporter.cpp">
+      <Filter>Source Files\Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleFileSystem.cpp">
+      <Filter>Source Files\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -532,6 +541,12 @@
     </ClInclude>
     <ClInclude Include="ModuleTimer.h">
       <Filter>Source Files\Modules\Performance</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshImporter.h">
+      <Filter>Source Files\Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleFileSystem.h">
+      <Filter>Source Files\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

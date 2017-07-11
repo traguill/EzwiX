@@ -13,6 +13,7 @@ class ModuleEditor;
 class ModuleFPS;
 class ModuleCPU;
 class ModuleTimer;
+class ModuleFileSystem;
 
 class Random;
 
@@ -57,6 +58,7 @@ public:
 	ModuleFPS* fps = nullptr;
 	ModuleCPU* m_cpu = nullptr;
 	ModuleTimer* timer = nullptr;
+	ModuleFileSystem* file_system = nullptr;
 
 	//Other
 	Random* rnd = nullptr;

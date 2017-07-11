@@ -10,8 +10,13 @@
 #include "ModuleFPS.h"
 #include "ModuleCPU.h"
 #include "ModuleTimer.h"
+#include "ModuleFileSystem.h"
 
 #include "Random.h"
+
+#include "MeshImporter.h"
+
+#include <shellapi.h>
 
 Application::Application()
 {
@@ -26,11 +31,13 @@ Application::Application()
 	camera = new ModuleCamera("camera");
 	editor = new ModuleEditor("editor");
 	graphics = new ModuleGraphics("graphics");
+	file_system = new ModuleFileSystem("file_system");
 	
 	list_modules.push_back(timer);
 	list_modules.push_back(fps);
 	list_modules.push_back(m_cpu);
 
+	list_modules.push_back(file_system);
 	list_modules.push_back(window);
 	list_modules.push_back(input);
 	list_modules.push_back(camera);
@@ -55,6 +62,7 @@ bool Application::Init()
 	bool ret = true;
 
 	ZeroMemory(&msg, sizeof(MSG));
+	
 
 	vector<Module*>::iterator module = list_modules.begin();
 
@@ -64,6 +72,9 @@ bool Application::Init()
 		if (ret == false)
 			break;
 	}
+
+	//Accept drag and drop files
+	DragAcceptFiles(hWnd, true);
 
 	return ret;
 }
@@ -194,6 +205,34 @@ LRESULT Application::MessageHandler(HWND hWnd, UINT message, WPARAM wParam, LPAR
 		case WM_MBUTTONUP:
 		{
 			App->input->MSGMouseButton(MOUSE_BUTTON_MIDDLE, false);
+			return 0;
+		}
+		//Drop files
+		case WM_DROPFILES:
+		{
+			char buff[MAX_PATH];
+			HDROP hDrop = (HDROP)wParam;
+			int num_files = DragQueryFile(hDrop, -1, NULL, NULL);
+			
+			for (int i = 0; i < num_files; ++i)
+			{
+				DragQueryFile(hDrop, i, buff, sizeof(buff));
+
+				//Auto-import the file once is dropped
+				LOG("Importing file %s", buff);
+
+				bool ret = MeshImporter::Import(buff);
+				if (ret)
+				{
+					LOG("INFO: File imported successfully");
+				}
+				else
+				{
+					LOG("ERROR: File could not be imported");
+				}
+			}
+
+			DragFinish(hDrop);
 			return 0;
 		}
 		default:
