@@ -64,6 +64,9 @@
     <Filter Include="3rdParty\Assimp">
       <UniqueIdentifier>{f0f2ad74-150a-4b3b-bb21-1ccfc295fa9f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="3rdParty\ImGuizmo">
+      <UniqueIdentifier>{519bc5a7-3c01-4da8-b114-12276e810742}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -266,6 +269,15 @@
     </ClCompile>
     <ClCompile Include="ModuleGameObjectManager.cpp">
       <Filter>Source Files\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentTransform.cpp">
+      <Filter>Source Files\GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuizmo\ImGuizmo.cpp">
+      <Filter>3rdParty\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Inspector.cpp">
+      <Filter>Source Files\Editor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -673,6 +685,15 @@
     </ClInclude>
     <ClInclude Include="ModuleGameObjectManager.h">
       <Filter>Source Files\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentTransform.h">
+      <Filter>Source Files\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuizmo\ImGuizmo.h">
+      <Filter>3rdParty\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Inspector.h">
+      <Filter>Source Files\Editor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

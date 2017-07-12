@@ -22,7 +22,9 @@ public:
 
 	D3DXVECTOR3 GetPosition()const;
 
+	void GetViewMatrix(math::float4x4& view)const;
 	void GetViewMatrix(D3DXMATRIX& view);
+	void GetProjectionMatrix(math::float4x4& projection)const;
 	void GetProjectionMatrix(D3DXMATRIX& projection);
 
 	void LookAt(const math::float3& point);

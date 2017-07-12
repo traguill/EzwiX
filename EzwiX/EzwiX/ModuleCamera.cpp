@@ -81,9 +81,19 @@ D3DXVECTOR3 ModuleCamera::GetPosition() const
 	return D3DXVECTOR3(position.ptr());
 }
 
+void ModuleCamera::GetViewMatrix(math::float4x4& view) const
+{
+	view = frustum.ViewMatrix();
+}
+
 void ModuleCamera::GetViewMatrix(D3DXMATRIX & view)
 {
 	view = D3DXMATRIX(float4x4(frustum.ViewMatrix()).ptr());
+}
+
+void ModuleCamera::GetProjectionMatrix(math::float4x4 & projection) const
+{
+	projection = frustum.ProjectionMatrix();
 }
 
 void ModuleCamera::GetProjectionMatrix(D3DXMATRIX & projection)

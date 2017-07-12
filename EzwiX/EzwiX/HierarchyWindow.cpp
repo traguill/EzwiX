@@ -3,6 +3,7 @@
 #include "Application.h"
 
 #include "ModuleGameObjectManager.h"
+#include "ModuleEditor.h"
 
 #include "GameObject.h"
 
@@ -30,6 +31,9 @@ void HierarchyWindow::DisplayGameObjects(const std::vector<GameObject*>* childs)
 	{
 		unsigned int flags = ImGuiTreeNodeFlags_OpenOnArrow;
 
+		if(App->editor->selected_gameobject == (*object))
+			flags |= ImGuiTreeNodeFlags_Selected;
+
 		if ((*object)->ChildCount() == 0)
 			flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
 
@@ -38,6 +42,12 @@ void HierarchyWindow::DisplayGameObjects(const std::vector<GameObject*>* childs)
 
 		bool hasChilds = (*object)->ChildCount() > 0;
 		ImGui::PopID();
+
+		//Select GameObject when is clicked (left-button). TODO: Improve this to accept multiple selection
+		if (ImGui::IsItemClicked(0))
+		{
+			App->editor->selected_gameobject = (*object);
+		}
 
 		if (hasChilds && open)
 		{

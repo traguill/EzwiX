@@ -29,6 +29,22 @@ bool ModuleGameObjectManager::CleanUp()
 	return true;
 }
 
+update_status ModuleGameObjectManager::PreUpdate()
+{
+	if (root)
+		PreUpdateGameObjects(root);
+
+	return update_status::UPDATE_CONTINUE;
+}
+
+update_status ModuleGameObjectManager::Update()
+{
+	if (root)
+		UpdateGameObjects(root);
+
+	return update_status::UPDATE_CONTINUE;
+}
+
 GameObject * ModuleGameObjectManager::CreateGameObject(GameObject * parent)
 {
 	GameObject* go = nullptr;
@@ -48,4 +64,28 @@ GameObject * ModuleGameObjectManager::CreateGameObject(GameObject * parent)
 const GameObject * ModuleGameObjectManager::GetRoot() const
 {
 	return root;
+}
+
+void ModuleGameObjectManager::PreUpdateGameObjects(GameObject * obj)
+{
+	if (root != obj && obj->IsActive() == true)
+		obj->PreUpdate();
+
+	std::vector<GameObject*>::const_iterator child = obj->GetChilds()->begin();
+	for (child; child != obj->GetChilds()->end(); ++child)
+	{
+		PreUpdateGameObjects((*child));
+	}
+}
+
+void ModuleGameObjectManager::UpdateGameObjects(GameObject* object)
+{
+	if (root != object && object->IsActive() == true)
+		object->Update();
+
+	std::vector<GameObject*>::const_iterator child = object->GetChilds()->begin();
+	for (child; child != object->GetChilds()->end(); ++child)
+	{
+		UpdateGameObjects((*child));
+	}
 }

@@ -14,9 +14,17 @@ public:
 	bool Init();
 	bool CleanUp();
 
+	update_status PreUpdate();
+	update_status Update();
+
 	GameObject* CreateGameObject(GameObject* parent); //For external use
 
 	const GameObject* GetRoot()const;
+
+private:
+
+	void PreUpdateGameObjects(GameObject* object);
+	void UpdateGameObjects(GameObject* object);
 
 private:
 

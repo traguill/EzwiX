@@ -6,13 +6,18 @@
 #include "ModuleFPS.h"
 #include "ModuleWindow.h"
 #include "ModuleCPU.h"
+#include "ModuleInput.h"
+#include "ModuleCamera.h"
 
 #include "HierarchyWindow.h"
+#include "Inspector.h"
 
-//Testing
-#include "ModuleInput.h"
+#include "GameObject.h"
+
+#include "ComponentTransform.h"
 
 #include "ImGui\imgui.h"
+#include "MathGeoLib\include\MathGeoLib.h"
 
 ModuleEditor::ModuleEditor(const char * name, bool start_enabled) : Module(name, start_enabled)
 {
@@ -28,6 +33,7 @@ bool ModuleEditor::Init()
 	layout = EDITOR_LAYOUT::MINIMAL; //TODO: Dislay different layout configurations for the windows. I'll do it another day...
 
 	windows.push_back(hierarchy = new HierarchyWindow());
+	windows.push_back(inspector = new Inspector());
 
 	return true;
 }
@@ -58,6 +64,8 @@ update_status ModuleEditor::Update()
 	if (stats_enabled)
 		DrawStatistics();
 
+	DisplayGuizmos();
+
 	return update_status::UPDATE_CONTINUE;
 }
 
@@ -76,4 +84,70 @@ void ModuleEditor::DrawStatistics() const
 	ImGui::Text("Mouse X: %i", mouse_x);
 	ImGui::Text("Mouse Y: %i", mouse_y);
 	ImGui::End();
+}
+
+void ModuleEditor::DisplayGuizmos()
+{
+	//Selection keys
+	if (App->input->GetKey(KEY_W) == KEY_DOWN)
+		guizmo_operation = ImGuizmo::OPERATION::TRANSLATE;
+	if (App->input->GetKey(KEY_E) == KEY_DOWN)
+		guizmo_operation = ImGuizmo::OPERATION::ROTATE;
+	if (App->input->GetKey(KEY_R) == KEY_DOWN)
+		guizmo_operation = ImGuizmo::OPERATION::SCALE;
+
+	ImGuizmo::BeginFrame();
+
+	if (selected_gameobject != nullptr)
+	{
+		GameObject* go = selected_gameobject;
+
+		ImGuizmo::Enable(guizmo_enabled);
+
+		float4x4 matrix = go->transform->GetLocalTransformMatrix().Transposed();
+
+		ComponentTransform* transform = go->transform;
+
+		ComponentTransform* parent_transform = nullptr;
+
+		if (go->GetParent())
+		{
+			parent_transform = (ComponentTransform*)go->GetParent()->GetComponent(C_TRANSFORM);
+			assert(parent_transform);
+
+			matrix = parent_transform->GetGlobalMatrix() * transform->GetLocalTransformMatrix();
+			matrix = matrix.Transposed();
+		}
+
+		float4x4 view_matrix = float4x4::identity;
+		float4x4 projection_matrix = float4x4::identity;
+		App->camera->GetViewMatrix(view_matrix);
+		App->camera->GetProjectionMatrix(projection_matrix);
+
+		//view_matrix = view_matrix.Transposed();
+		//projection_matrix = projection_matrix.Transposed();
+
+		if (guizmo_operation == ImGuizmo::OPERATION::SCALE)
+			ImGuizmo::Manipulate(view_matrix.ptr(), projection_matrix.ptr(), (ImGuizmo::OPERATION)guizmo_operation, ImGuizmo::LOCAL, matrix.ptr());
+		else
+			ImGuizmo::Manipulate(view_matrix.ptr(), projection_matrix.ptr(), (ImGuizmo::OPERATION)guizmo_operation, (ImGuizmo::MODE)guizmo_mode, matrix.ptr());
+
+		if (ImGuizmo::IsUsing())
+		{
+			matrix.Transpose();
+
+			if (go->GetParent())
+			{
+				matrix = parent_transform->GetGlobalMatrix().Inverted() * matrix;
+			}
+
+			float3 position, scale;
+			Quat rotation;
+			matrix.Decompose(position, rotation, scale);
+
+			go->transform->SetPosition(position);
+			go->transform->SetRotation(rotation);
+			go->transform->SetScale(scale);
+		}
+	}
 }

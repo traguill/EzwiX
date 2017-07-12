@@ -92,8 +92,9 @@ private:
 #define KEY_8 0x38
 #define KEY_9 0x39
 
-
-
+#define KEY_W 0x57
+#define KEY_E 0x45
+#define KEY_R 0x52
 
 //TODO: Do the same with the other keys. Too lazy to do it now...
 // https://msdn.microsoft.com/en-us/library/windows/desktop/dd375731(v=vs.85).aspx

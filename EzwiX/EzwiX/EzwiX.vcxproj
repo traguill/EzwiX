@@ -123,10 +123,13 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentMesh.cpp" />
     <ClCompile Include="ComponentTexture.cpp" />
+    <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="D3DModule.cpp" />
     <ClCompile Include="Data.cpp" />
     <ClCompile Include="HierarchyWindow.cpp" />
+    <ClCompile Include="ImGuizmo\ImGuizmo.cpp" />
+    <ClCompile Include="Inspector.cpp" />
     <ClCompile Include="MeshImporter.cpp" />
     <ClCompile Include="ModuleCPU.cpp" />
     <ClCompile Include="ModuleFileSystem.cpp" />
@@ -229,10 +232,13 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentMesh.h" />
     <ClInclude Include="ComponentTexture.h" />
+    <ClInclude Include="ComponentTransform.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="D3DModule.h" />
     <ClInclude Include="Data.h" />
     <ClInclude Include="HierarchyWindow.h" />
+    <ClInclude Include="ImGuizmo\ImGuizmo.h" />
+    <ClInclude Include="Inspector.h" />
     <ClInclude Include="MeshImporter.h" />
     <ClInclude Include="ModuleCPU.h" />
     <ClInclude Include="ModuleFileSystem.h" />
