@@ -32,6 +32,9 @@ private:
 	void DrawStatistics()const;
 	void DisplayGuizmos();
 
+	//File
+	void Load3DModel();
+
 private:
 
 	std::vector<Window*> windows;

@@ -4,7 +4,7 @@
 #include "Module.h"
 
 class D3DModule;
-class ComponentMesh; //TODO: remove. It's here for testing
+class ComponentMesh; 
 class ComponentTexture; //TODO: remove. It's here for testing
 class ShaderClass;
 class TextureShaderClass;
@@ -25,6 +25,8 @@ public:
 	float GetScreenNear()const;
 	bool IsVsyncEnabled()const;
 
+	void AddToDraw(ComponentMesh* mesh); //Testing
+
 public:
 
 	D3DModule* d3d = nullptr;
@@ -34,10 +36,11 @@ private:
 	float screen_near = 0.1f;
 	bool vsync_enabled = true;
 
-	ComponentMesh* model = nullptr; //Testing
 	ComponentTexture* texture = nullptr; //Testing
 	//ShaderClass* shader_class = nullptr;
 	TextureShaderClass* texture_shader = nullptr;
+
+	std::vector<ComponentMesh*> models; //Testing
 };
 
 #endif 

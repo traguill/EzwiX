@@ -4,6 +4,7 @@
 
 #include "Component.h"
 #include "ComponentTransform.h"
+#include "ComponentMesh.h"
 
 #include "Random.h"
 #include "log.h"
@@ -34,6 +35,11 @@ GameObject::GameObject(GameObject * parent)
 		this->parent = parent;
 		parent->AddChild(this);
 	}
+}
+
+GameObject::GameObject(const char * name, unsigned int uuid, GameObject * parent) : name(name), uuid(uuid), parent(parent)
+{
+	//NOTE:This method is only to initialize the gameobject from a 3D model file. This constructor doesn't automatically create the transform component, neither links the parent with the childs. It's done all outside.
 }
 
 void GameObject::PreUpdate()
@@ -81,6 +87,12 @@ Component * GameObject::AddComponent(ComponentType type)
 		{
 			item = new ComponentTransform(type, this, &global_matrix);
 			transform = (ComponentTransform*)item;
+		}
+		break;
+	case C_MESH:
+		if (transform)
+		{
+			item = new ComponentMesh(type, this);
 		}
 		break;
 	default:

@@ -8,6 +8,8 @@
 #include "ModuleCPU.h"
 #include "ModuleInput.h"
 #include "ModuleCamera.h"
+#include "ModuleFileSystem.h"
+#include "ModuleGameObjectManager.h"
 
 #include "HierarchyWindow.h"
 #include "Inspector.h"
@@ -16,6 +18,7 @@
 
 #include "ComponentTransform.h"
 
+#include "log.h"
 #include "ImGui\imgui.h"
 #include "MathGeoLib\include\MathGeoLib.h"
 
@@ -44,6 +47,11 @@ update_status ModuleEditor::Update()
 	{
 		if (ImGui::BeginMenu("File"))
 		{
+			if (ImGui::BeginMenu("Load 3D model"))
+			{
+				Load3DModel();
+				ImGui::EndMenu();
+			}
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Windows"))
@@ -148,6 +156,26 @@ void ModuleEditor::DisplayGuizmos()
 			go->transform->SetPosition(position);
 			go->transform->SetRotation(rotation);
 			go->transform->SetScale(scale);
+		}
+	}
+}
+
+void ModuleEditor::Load3DModel()
+{
+	//Collect all files with the extension .inf. TODO: Don't do this every frame.
+	vector<string> files, models;
+
+	string meshes_folder = App->file_system->GetDirectory() + "Meshes\\*.*";
+	App->file_system->GetAllFilesInDirectory(meshes_folder.data(), files);
+
+	App->file_system->FilterFiles(files, models, ".inf");
+
+	for (vector<string>::iterator item = models.begin(); item != models.end(); ++item)
+	{
+		if (ImGui::MenuItem((*item).data()))
+		{
+			string file_name = App->file_system->GetDirectory() + "Meshes\\" + (*item).data();
+			App->gameobject_manager->Load3DModelFile(file_name.data());
 		}
 	}
 }

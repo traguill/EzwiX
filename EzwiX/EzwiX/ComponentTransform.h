@@ -15,6 +15,9 @@ public:
 
 	void OnInspector(bool debug);
 
+	void Load(Data& file);
+	void Save(Data& file) const;
+
 	void SetPosition(const math::float3& pos);
 	void SetRotation(const math::float3 &rot_euler);
 	void SetRotation(const math::Quat& rot);

@@ -6,6 +6,26 @@
 #include <d3d11.h>
 #include <d3dx10math.h>
 
+#include <string>
+
+struct Mesh
+{
+	unsigned int id_vertices = 0;
+	unsigned int num_vertices = 0;
+	float* vertices = nullptr;
+
+	unsigned int id_indices = 0;
+	unsigned int num_indices = 0;
+	unsigned int* indices = nullptr;
+
+	unsigned int id_uvs = 0;
+	unsigned int num_uvs = 0 ;
+	float* uvs = nullptr;
+
+	unsigned int id_normals = 0;
+	float* normals = nullptr;
+};
+
 class ComponentMesh : public Component
 {
 public:
@@ -25,6 +45,9 @@ public:
 
 	unsigned int GetIndexCount()const;
 
+	void SetMeshPath(const char* path);
+	std::string GetMeshPath()const;
+
 private:
 	void InitializeBuffers(ID3D11Device* device);
 	void CleanUpBuffers();
@@ -43,6 +66,9 @@ private:
 
 	int vertex_count = 0; 
 	int index_count = 0;
+
+	Mesh* mesh = nullptr;
+	std::string mesh_path;
 
 public:
 };

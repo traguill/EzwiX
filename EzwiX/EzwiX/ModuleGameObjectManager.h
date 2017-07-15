@@ -21,10 +21,15 @@ public:
 
 	const GameObject* GetRoot()const;
 
+	void Load3DModelFile(const char* file_path);
+
 private:
 
 	void PreUpdateGameObjects(GameObject* object);
 	void UpdateGameObjects(GameObject* object);
+
+	//Load 3DModels helpers
+	GameObject* FindGameObject(const vector<GameObject*>& list, unsigned int uuid)const;
 
 private:
 

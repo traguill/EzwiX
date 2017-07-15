@@ -18,6 +18,7 @@ public:
 	~GameObject();
 
 	GameObject(GameObject* parent);
+	GameObject(const char* name, unsigned int uuid, GameObject* parent);
 
 	void PreUpdate();
 	void Update();

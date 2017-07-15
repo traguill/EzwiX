@@ -8,6 +8,7 @@
 #include "GameObject.h"
 
 #include "log.h"
+#include "Data.h"
 
 using namespace std;
 
@@ -121,6 +122,32 @@ void ComponentTransform::OnInspector(bool debug)
 			ImGui::PopStyleColor();
 		}
 	}
+}
+
+void ComponentTransform::Load(Data & conf)
+{
+	uuid = conf.GetUInt("UUID");
+	active = conf.GetBool("active");
+
+	local_matrix = conf.GetMatrix("matrix");
+
+	position = local_matrix.TranslatePart();
+	rotation_euler = local_matrix.ToEulerXYZ(); //In radians for now.
+	rotation = Quat::FromEulerXYZ(rotation_euler.x, rotation_euler.y, rotation_euler.z);
+	rotation_euler = RadToDeg(rotation_euler); //To degrees
+	scale = local_matrix.GetScale();
+	CalculateGlobalTransform();
+}
+
+void ComponentTransform::Save(Data & file) const
+{
+	Data data;
+	data.AppendInt("type", type);
+	data.AppendUInt("UUID", uuid);
+	data.AppendBool("active", active);
+	data.AppendMatrix("matrix", local_matrix);
+
+	file.AppendArrayValue(data);
 }
 
 void ComponentTransform::SetPosition(const math::float3& pos)

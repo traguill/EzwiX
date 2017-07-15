@@ -6,11 +6,13 @@
 #include "log.h"
 #include "Globals.h"
 
+#include "MeshImporter.h"
+
 #include "ModuleGraphics.h"
+#include "ModuleFileSystem.h"
 
 ComponentMesh::ComponentMesh(ComponentType type, GameObject* game_object) : Component(type, game_object)
 {
-	InitializeBuffers(App->graphics->d3d->GetDevice());
 }
 
 ComponentMesh::~ComponentMesh()
@@ -20,6 +22,10 @@ ComponentMesh::~ComponentMesh()
 
 void ComponentMesh::Update()
 {
+	if (mesh)
+	{
+		App->graphics->AddToDraw(this);
+	}
 }
 
 void ComponentMesh::OnInspector(bool debug)
@@ -50,41 +56,33 @@ void ComponentMesh::Load(Data & conf)
 	uuid = conf.GetUInt("UUID");
 	active = conf.GetBool("active");
 
-	//TODO: Load specific mesh info
+	mesh_path = conf.GetString("path");
+
+	InitializeBuffers(App->graphics->d3d->GetDevice());
 }
 
 void ComponentMesh::InitializeBuffers(ID3D11Device * device)
 {
-	//For now we draw a quad
-	
+	//Load the mesh file
+	mesh = MeshImporter::Load(mesh_path.data());
+
+	if (mesh == nullptr)
+		return;
+
 	HRESULT result;
 
-	vertex_count = 4;
-	index_count = 6;
+	vertex_count = mesh->num_vertices;
+	index_count = mesh->num_indices;
 
 	VertexType* vertices = new VertexType[vertex_count];
-	unsigned long* indices = new unsigned long[index_count];
 
+	//TODO: Improve this method. TOO SLOW!!!
 	//Vertices
-	vertices[0].position = D3DXVECTOR3(-1.0f, -1.0f, 0.0f); //Left - bot
-	vertices[0].texture = D3DXVECTOR2(0.0f, 1.0f);
-
-	vertices[1].position = D3DXVECTOR3(-1.0f, 1.0f, 0.0f); //left - top
-	vertices[1].texture = D3DXVECTOR2(0.0f, 0.0f);
-
-	vertices[2].position = D3DXVECTOR3(1.0f, 1.0f, 0.0f); //Right - top
-	vertices[2].texture = D3DXVECTOR2(1.0f, 0.0f);
-
-	vertices[3].position = D3DXVECTOR3(1.0f, -1.0f, 0.0f); //Right - bot
-	vertices[3].texture = D3DXVECTOR2(1.0f, 1.0f);
-
-	//Indices
-	indices[0] = 0;
-	indices[1] = 1;
-	indices[2] = 3;
-	indices[3] = 3;
-	indices[4] = 1;
-	indices[5] = 2;
+	for (int v = 0; v < vertex_count; ++v)
+	{
+		vertices[v].position = D3DXVECTOR3(mesh->vertices[v * 3], mesh->vertices[v * 3 + 1], mesh->vertices[v * 3 + 2]);
+		vertices[v].texture = D3DXVECTOR2(mesh->uvs[v * 3], mesh->uvs[v * 3 + 1]);
+	}
 
 	//Set up the description of the vertex buffer
 	D3D11_BUFFER_DESC v_buffer_desc;
@@ -119,7 +117,7 @@ void ComponentMesh::InitializeBuffers(ID3D11Device * device)
 
 	//Set up the subresource structure
 	D3D11_SUBRESOURCE_DATA index_data;
-	index_data.pSysMem = indices;
+	index_data.pSysMem = mesh->indices;
 	index_data.SysMemPitch = 0;
 	index_data.SysMemSlicePitch = 0;
 
@@ -133,9 +131,6 @@ void ComponentMesh::InitializeBuffers(ID3D11Device * device)
 	//Clean up
 	delete[] vertices;
 	vertices = nullptr;
-
-	delete[] indices;
-	indices = nullptr;
 }
 
 void ComponentMesh::CleanUpBuffers()
@@ -164,4 +159,14 @@ void ComponentMesh::Render()
 unsigned int ComponentMesh::GetIndexCount() const
 {
 	return index_count;
+}
+
+void ComponentMesh::SetMeshPath(const char * path)
+{
+	mesh_path = path;
+}
+
+std::string ComponentMesh::GetMeshPath() const
+{
+	return mesh_path;
 }
