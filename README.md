@@ -15,3 +15,12 @@ The engine is only for Windows and uses DirectX 11.
 * **Mouse wheel button + drag**: move the camera
 * **Spacebar**: reset the camera
 
+### Load 3D models
+
+* Select the file and drag it to the application. Formats accepted (fbx, obj).
+
+*Note: Only drag one file at a time.*
+
+* File -> Load 3D model -> Select your 3D model
+
+*Note: If the model does not appear check Windows -> Console for more information*
