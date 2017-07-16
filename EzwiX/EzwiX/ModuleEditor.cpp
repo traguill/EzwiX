@@ -165,7 +165,7 @@ void ModuleEditor::Load3DModel()
 	//Collect all files with the extension .inf. TODO: Don't do this every frame.
 	vector<string> files, models;
 
-	string meshes_folder = App->file_system->GetDirectory() + "Meshes\\*.*";
+	string meshes_folder = App->file_system->GetMeshesDirectory() + "*.*";
 	App->file_system->GetAllFilesInDirectory(meshes_folder.data(), files);
 
 	App->file_system->FilterFiles(files, models, ".inf");
@@ -174,7 +174,7 @@ void ModuleEditor::Load3DModel()
 	{
 		if (ImGui::MenuItem((*item).data()))
 		{
-			string file_name = App->file_system->GetDirectory() + "Meshes\\" + (*item).data();
+			string file_name = App->file_system->GetMeshesDirectory() + (*item).data();
 			App->gameobject_manager->Load3DModelFile(file_name.data());
 		}
 	}

@@ -279,6 +279,9 @@
     <ClCompile Include="Inspector.cpp">
       <Filter>Source Files\Editor</Filter>
     </ClCompile>
+    <ClCompile Include="TextureImporter.cpp">
+      <Filter>Source Files\Importers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -694,6 +697,9 @@
     </ClInclude>
     <ClInclude Include="Inspector.h">
       <Filter>Source Files\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureImporter.h">
+      <Filter>Source Files\Importers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

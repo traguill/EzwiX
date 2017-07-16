@@ -6,6 +6,7 @@
 #include "Component.h"
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
+#include "ComponentTexture.h"
 
 #include "log.h"
 #include "Data.h"
@@ -129,6 +130,12 @@ void ModuleGameObjectManager::Load3DModelFile(const char* file_path)
 			{
 				ComponentMesh* c_mesh = (ComponentMesh*)game_object->AddComponent(C_MESH);
 				c_mesh->Load(component_data);
+				break;
+			}
+			case ComponentType::C_TEXTURE:
+			{
+				ComponentTexture* c_tex = (ComponentTexture*)game_object->AddComponent(C_TEXTURE);
+				c_tex->Load(component_data);
 				break;
 			}
 			default:

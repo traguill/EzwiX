@@ -1,5 +1,9 @@
 #include "ComponentTexture.h"
 
+#include "Application.h"
+#include "ModuleGraphics.h"
+#include "D3DModule.h"
+
 #include "Data.h"
 #include "log.h"
 #include "Globals.h"
@@ -30,6 +34,10 @@ void ComponentTexture::Load(Data & conf)
 	active = conf.GetBool("active");
 
 	//TODO: Load specific texture info
+	texture_path = conf.GetString("path");
+
+	if(texture_path.size() > 0)
+		Initialize(App->graphics->d3d->GetDevice(), texture_path.data());
 }
 
 bool ComponentTexture::Initialize(ID3D11Device * device, const char * tex_path)
@@ -50,6 +58,16 @@ bool ComponentTexture::Initialize(ID3D11Device * device, const char * tex_path)
 ID3D11ShaderResourceView * ComponentTexture::GetTexture() const
 {
 	return texture;
+}
+
+std::string ComponentTexture::GetTexturePath() const
+{
+	return texture_path;
+}
+
+void ComponentTexture::SetTexturePath(const char * path)
+{
+	texture_path = path;
 }
 
 void ComponentTexture::CleanUp()

@@ -75,13 +75,18 @@ void ComponentMesh::InitializeBuffers(ID3D11Device * device)
 	index_count = mesh->num_indices;
 
 	VertexType* vertices = new VertexType[vertex_count];
-
+	unsigned int* indices = new unsigned int[index_count];
 	//TODO: Improve this method. TOO SLOW!!!
 	//Vertices
 	for (int v = 0; v < vertex_count; ++v)
 	{
 		vertices[v].position = D3DXVECTOR3(mesh->vertices[v * 3], mesh->vertices[v * 3 + 1], mesh->vertices[v * 3 + 2]);
-		vertices[v].texture = D3DXVECTOR2(mesh->uvs[v * 3], mesh->uvs[v * 3 + 1]);
+		vertices[v].texture = D3DXVECTOR2(mesh->uvs[v * 2], mesh->uvs[v * 2 + 1]);
+	}
+
+	for (int i = 0; i < index_count; ++i)
+	{
+		indices[i] = mesh->indices[(index_count - 1) - i];
 	}
 
 	//Set up the description of the vertex buffer
@@ -117,7 +122,7 @@ void ComponentMesh::InitializeBuffers(ID3D11Device * device)
 
 	//Set up the subresource structure
 	D3D11_SUBRESOURCE_DATA index_data;
-	index_data.pSysMem = mesh->indices;
+	index_data.pSysMem = indices;
 	index_data.SysMemPitch = 0;
 	index_data.SysMemSlicePitch = 0;
 
@@ -131,6 +136,9 @@ void ComponentMesh::InitializeBuffers(ID3D11Device * device)
 	//Clean up
 	delete[] vertices;
 	vertices = nullptr;
+
+	delete[] indices;
+	indices = nullptr;
 }
 
 void ComponentMesh::CleanUpBuffers()

@@ -6,6 +6,8 @@
 #include <d3d11.h>
 #include <d3dx11tex.h>
 
+#include <string>
+
 class ComponentTexture : public Component
 {
 public:
@@ -19,6 +21,9 @@ public:
 
 	ID3D11ShaderResourceView* GetTexture()const;
 
+	std::string GetTexturePath()const;
+	void SetTexturePath(const char* path);
+
 private:
 	
 	void CleanUp();
@@ -26,5 +31,7 @@ private:
 private:
 
 	ID3D11ShaderResourceView* texture = nullptr;
+
+	std::string texture_path;
 };
 #endif // !__COMPONENT_TEXTURE_H__

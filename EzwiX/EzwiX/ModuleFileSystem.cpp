@@ -1,5 +1,7 @@
 #include "ModuleFileSystem.h"
 
+#include "log.h"
+
 ModuleFileSystem::ModuleFileSystem(const char* name, bool start_enabled) : Module(name, start_enabled)
 {}
 
@@ -15,6 +17,17 @@ bool ModuleFileSystem::Init()
 
 	current_directory = string(directory);
 	current_directory.append("\\");
+
+	library_directory = current_directory + "Library\\";
+	CreateDirectory(library_directory.data(), NULL);
+
+	meshes_directory = library_directory + "Meshes\\";
+	CreateDirectory(meshes_directory.data(), NULL);
+
+	textures_directory = library_directory + "Textures\\";
+	CreateDirectory(textures_directory.data(), NULL);
+
+	LOG("Current directory: %s", current_directory.data());
 
 	return true;
 }
@@ -62,11 +75,31 @@ std::string ModuleFileSystem::GetDirectory() const
 	return current_directory;
 }
 
+std::string ModuleFileSystem::GetLibraryDirectory() const
+{
+	return library_directory;
+}
+
+std::string ModuleFileSystem::GetMeshesDirectory() const
+{
+	return meshes_directory;
+}
+
+std::string ModuleFileSystem::GetTexturesDirectory() const
+{
+	return textures_directory;
+}
+
 std::string ModuleFileSystem::GetFileNameFromPath(const std::string & path) const
 {
 	size_t begin = path.find_last_of("\\/") + 1;
 	size_t end = path.find_last_of(".");
 	return path.substr(begin, end - begin);
+}
+
+std::string ModuleFileSystem::GetDirectoryFromPath(const std::string & path) const
+{
+	return path.substr(0, path.find_last_of("\\/") + 1);
 }
 
 unsigned int ModuleFileSystem::GetAllFilesInDirectory(const char * path, vector<string>& filenames) const

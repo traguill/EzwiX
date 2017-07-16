@@ -5,6 +5,7 @@
 #include "Component.h"
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
+#include "ComponentTexture.h"
 
 #include "Random.h"
 #include "log.h"
@@ -95,6 +96,14 @@ Component * GameObject::AddComponent(ComponentType type)
 			item = new ComponentMesh(type, this);
 		}
 		break;
+	case C_TEXTURE:
+	{
+		if (transform)
+		{
+			item = new ComponentTexture(type, this);
+		}
+		break;
+	}
 	default:
 		LOG("[WARNING] Unknown type specified for GameObject %s", name);
 		break;

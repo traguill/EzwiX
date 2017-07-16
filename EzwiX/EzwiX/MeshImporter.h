@@ -14,7 +14,7 @@ class GameObject;
 namespace MeshImporter
 {
 	bool Import(const char* path);
-	void ImportNode(aiNode * node, const aiScene * scene, GameObject* parent, std::vector<GameObject*>& created_go);
+	void ImportNode(aiNode * node, const aiScene * scene, GameObject* parent, std::vector<GameObject*>& created_go, std::string file_directory);
 	bool ImportMesh(const aiMesh* mesh, std::string& mesh_path);
 	bool Save(Mesh& mesh, std::string& mesh_path);
 	Mesh* Load(const char* path);

@@ -8,6 +8,7 @@
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
+#include "ComponentTexture.h"
 
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
@@ -17,6 +18,7 @@
 
 #include "log.h"
 #include "Data.h"
+#include "TextureImporter.h"
 
 bool MeshImporter::Import(const char * path)
 {
@@ -42,7 +44,9 @@ bool MeshImporter::Import(const char * path)
 		vector<const aiMesh*> boned_meshes;
 		vector<const GameObject*> boned_game_objects;
 
-		MeshImporter::ImportNode(root, scene, nullptr, objects_created);
+		string file_directory = App->file_system->GetDirectoryFromPath(path);
+
+		MeshImporter::ImportNode(root, scene, nullptr, objects_created, file_directory);
 
 		//Renaming RootNode
 		if (objects_created[0]->name == "RootNode")
@@ -58,7 +62,7 @@ bool MeshImporter::Import(const char * path)
 			objects_created[0]->name = name;
 		}
 
-		string file = "Meshes/" + App->file_system->GetFileNameFromPath(path) + ".inf";
+		string file = "Library//Meshes/" + App->file_system->GetFileNameFromPath(path) + ".inf";
 		SaveInfoFile(objects_created, file.data());
 
 		for (vector<GameObject*>::iterator go = objects_created.begin(); go != objects_created.end(); ++go)
@@ -75,7 +79,7 @@ bool MeshImporter::Import(const char * path)
 	return ret;
 }
 
-void MeshImporter::ImportNode(aiNode * node, const aiScene * scene, GameObject* parent, std::vector<GameObject*>& created_go)
+void MeshImporter::ImportNode(aiNode * node, const aiScene * scene, GameObject* parent, std::vector<GameObject*>& created_go, std::string file_directory)
 {
 	//Transformation ------------------------------------------------------------------------------------------------------------------
 	aiVector3D translation;
@@ -159,11 +163,30 @@ void MeshImporter::ImportNode(aiNode * node, const aiScene * scene, GameObject* 
 		ComponentMesh* mesh = (ComponentMesh*)child->AddComponent(C_MESH);
 		mesh->SetMeshPath(mesh_path.data());
 		//Load Textures --------------------------------------------------------------------------------------------------------------------
-		//TODO: Textures
+		aiMaterial* material = scene->mMaterials[mesh_to_load->mMaterialIndex];
+		if (material)
+		{
+
+			aiString path;
+			material->GetTexture(aiTextureType_DIFFUSE, 0, &path);
+			ComponentTexture* c_tex = (ComponentTexture*)child->AddComponent(C_TEXTURE);
+
+			if (path.length > 0)
+			{
+				string file_name = "Library//Textures//" + std::to_string(App->rnd->RandomInt()) + ".dds";
+				string texture_path = file_directory + path.C_Str();
+				bool tex_import_succeed = TextureImporter::Import(texture_path.data(), file_name.data());
+				if (tex_import_succeed)
+					c_tex->SetTexturePath(file_name.data());
+				else
+					LOG("ERROR while importing the texture: %s", texture_path.data());
+			}
+				
+		}
 	}
 
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
-		MeshImporter::ImportNode(node->mChildren[i], scene, go_root, created_go);
+		MeshImporter::ImportNode(node->mChildren[i], scene, go_root, created_go, file_directory);
 }
 
 bool MeshImporter::ImportMesh(const aiMesh * mesh_to_load, string& mesh_path)
@@ -175,9 +198,15 @@ bool MeshImporter::ImportMesh(const aiMesh * mesh_to_load, string& mesh_path)
 	//Vertices ------------------------------------------------------------------------------------------------------
 	mesh.num_vertices = mesh_to_load->mNumVertices;
 	mesh.vertices = new float[mesh.num_vertices * 3];
-	memcpy(mesh.vertices, mesh_to_load->mVertices, sizeof(float3) * mesh.num_vertices);
-
-
+	float ver_z_inverted;
+	for (unsigned int ver = 0; ver < mesh.num_vertices; ++ver)
+	{
+		memcpy(&mesh.vertices[ver * 3], &mesh_to_load->mVertices[ver], sizeof(float2));
+		ver_z_inverted = mesh_to_load->mVertices[ver].z * -1.0f;
+		memcpy(&mesh.vertices[(ver * 3) + 2], &ver_z_inverted, sizeof(float));
+	}
+	
+	
 	//Indices --------------------------------------------------------------------------------------------------------
 	if (mesh_to_load->HasFaces())
 	{
@@ -201,10 +230,12 @@ bool MeshImporter::ImportMesh(const aiMesh * mesh_to_load, string& mesh_path)
 	{
 		mesh.num_uvs = mesh_to_load->mNumVertices; //Same size as vertices
 		mesh.uvs = new float[mesh.num_uvs * 2];
-		for (unsigned int uvs_item = 0; uvs_item < mesh.num_uvs; uvs_item++)
+		float y_inverted;
+		for (unsigned int uvs_item = 0; uvs_item < mesh.num_uvs; ++uvs_item)
 		{
 			memcpy(&mesh.uvs[uvs_item * 2], &mesh_to_load->mTextureCoords[0][uvs_item].x, sizeof(float));
-			memcpy(&mesh.uvs[(uvs_item * 2) + 1], &mesh_to_load->mTextureCoords[0][uvs_item].y, sizeof(float));
+			y_inverted = 1.0f - mesh_to_load->mTextureCoords[0][uvs_item].y; //Invert Y coordinate
+			memcpy(&mesh.uvs[(uvs_item * 2) + 1], &y_inverted, sizeof(float));
 		}
 	}
 
@@ -272,7 +303,7 @@ bool MeshImporter::Save(Mesh& mesh, string& mesh_path)
 
 	//Generate random UUID for the name
 	unsigned int msh_uuid = (unsigned int)App->rnd->RandomInt();
-	string name = "Meshes/" + std::to_string(msh_uuid) + ".msh";
+	string name = "Library\\Meshes\\" + std::to_string(msh_uuid) + ".msh";
 	ret = App->file_system->Save(name.data(), data, size);
 
 	mesh_path = name;
@@ -381,6 +412,9 @@ void MeshImporter::SaveGameObjectInfo(GameObject* gameObject, Data& data)
 			{
 			case (C_MESH):
 				component_data.AppendString("path", ((ComponentMesh*)*component)->GetMeshPath().c_str());
+				break;
+			case (C_TEXTURE):
+				component_data.AppendString("path", ((ComponentTexture*)*component)->GetTexturePath().c_str());
 				break;
 			}
 			go_data.AppendArrayValue(component_data);

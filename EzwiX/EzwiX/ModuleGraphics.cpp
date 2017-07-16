@@ -17,6 +17,13 @@
 #include "ImGui\imgui.h"
 #include "ImGui\imgui_impl_dx11.h"
 
+#include "Devil/include/il.h"
+#include "Devil/include/ilut.h"
+#pragma comment ( lib, "Devil/libx86/DevIL.lib" )
+#pragma comment ( lib, "Devil/libx86/ILU.lib" )
+#pragma comment ( lib, "Devil/libx86/ILUT.lib" )
+
+
 ModuleGraphics::ModuleGraphics(const char * name, bool start_enabled) : Module(name, start_enabled)
 {
 }
@@ -52,7 +59,12 @@ bool ModuleGraphics::Init()
 		return false;
 	}
 
+	//Init ImGui
 	ImGui_ImplDX11_Init(App->hWnd, d3d->GetDevice(), d3d->GetDeviceContext());
+
+	//Init Devil
+	ilInit();
+	iluInit();
 
 	return ret;
 }
@@ -71,6 +83,8 @@ bool ModuleGraphics::CleanUp()
 
 	d3d->CleanUp();
 	delete d3d;
+
+	ilShutDown();
 
 	return true;
 }
@@ -95,10 +109,21 @@ update_status ModuleGraphics::PostUpdate()
 	App->camera->GetProjectionMatrix(projection_matrix);
 
 	//Render all the objects.
+	ComponentTexture* tex = nullptr;
+	ComponentTexture* model_texture = nullptr;
 	for (vector<ComponentMesh*>::iterator model = models.begin(); model != models.end(); ++model)
 	{
 		(*model)->Render();
-		texture_shader->Render(d3d->GetDeviceContext(), (*model)->GetIndexCount(), D3DXMATRIX((*model)->GetGameObject()->transform->GetGlobalMatrixTransposed().ptr()), view_matrix, projection_matrix, texture->GetTexture());
+
+		//TODO: Improve this approach
+		model_texture = texture; //Texture by default
+		tex = (ComponentTexture*)(*model)->GetGameObject()->GetComponent(C_TEXTURE);
+		if (tex)
+		{
+			if (tex->GetTexturePath().size() > 0)
+				model_texture = tex;
+		}
+		texture_shader->Render(d3d->GetDeviceContext(), (*model)->GetIndexCount(), D3DXMATRIX((*model)->GetGameObject()->transform->GetGlobalMatrixTransposed().ptr()), view_matrix, projection_matrix, model_texture->GetTexture());
 	}
 	
 

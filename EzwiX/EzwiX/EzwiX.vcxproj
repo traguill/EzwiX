@@ -187,6 +187,7 @@
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="ShaderClass.cpp" />
+    <ClCompile Include="TextureImporter.cpp" />
     <ClCompile Include="TextureShaderClass.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
@@ -327,6 +328,7 @@
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="ShaderClass.h" />
+    <ClInclude Include="TextureImporter.h" />
     <ClInclude Include="TextureShaderClass.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
